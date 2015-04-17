@@ -10,7 +10,9 @@ https://docs.djangoproject.com/en/1.6/ref/settings/
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 import os
+import formulaSim
 BASE_DIR = os.path.dirname(os.path.dirname(__file__))
+
 
 
 # Quick-start development settings - unsuitable for production
@@ -36,6 +38,7 @@ INSTALLED_APPS = (
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'formulaSim',
 )
 
 MIDDLEWARE_CLASSES = (
@@ -57,8 +60,12 @@ WSGI_APPLICATION = 'formulaSite.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'NAME': 'formulaDB',
+        'USER': 'postgres',
+        'PASSWORD': '99Stefania99!',
+        'HOST': 'localhost',
+        'PORT': '8000'
     }
 }
 
