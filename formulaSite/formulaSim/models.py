@@ -1,157 +1,226 @@
+# This is an auto-generated Django model module.
+# You'll have to do the following manually to clean this up:
+#   * Rearrange models' order
+#   * Make sure each model has one field with primary_key=True
+#   * Remove `managed = False` lines if you wish to allow Django to create and delete the table
+# Feel free to rename the models, but don't rename db_table values or field names.
+#
+# Also note: You'll have to insert the output of 'django-admin.py sqlcustom [appname]'
+# into your database.
+from __future__ import unicode_literals
+
 from django.db import models
 
-# Create your models here.
-"""
-Models based on ER-Diagram
-
-No ids added since Django adds them,
-Changed id references to ForeignKeys
-
-Change however
-"""
-
-
-"""
-Model of Driver
-"""
-class Driver(models.Model):
-	number = models.IntegerField(default = 0)
-	code = models.CharField(max_length=50)
-	forename = models.CharField(max_length=50)
-	surname = models.CharField(max_length=50)
-	dob = models.CharField(max_length=20)
-	nationality = models.CharField(max_length=50)
-
-	def __str__(self):
-		return self.name
-
-"""
-Model of Results
-"""
-class Results(models.Model):
-	raceID = models.ForeignKey('Race')
-	driverID = models.ForeignKey('Driver')
-	constructorID = models.ForeignKey('Constructors')
-	number = models.IntegerField()
-	grid = models.IntegerField()
-	position = models.IntegerField()
-	positionText = models.CharField(max_length=50)
-	positionOrder = models.IntegerField()
-	points = models.DecimalField(max_digits=20, decimal_places=10)
-	laps = models.IntegerField()
-	time = models.CharField(max_length=50)
-	milliseconds = models.IntegerField()
-	fastestLap = models.IntegerField()
-	rank = models.IntegerField()
-	fastestLapTime = models.CharField(max_length=50)
-	statusID = models.IntegerField()
-
-	def __str__(self):
-		return self.position
-
-"""
-Model of Constructors
-"""
-class Constructors(models.Model):
-	name = models.CharField(max_length=50)
-	nationality = models.CharField(max_length=50)
-
-	def __str__(self):
-		return self.name
-
-"""
-Model of Qualifying
-"""
-class Qualifying(models.Model):
-	raceID = models.ForeignKey('Race')
-	driverID = models.ForeignKey('Driver')
-	constructorID = models.ForeignKey('Constructors')
-	number = models.IntegerField()
-	position = models.IntegerField()
-	q1 = models.CharField(max_length=50)
-	q2 = models.CharField(max_length=50)
-	q3 = models.CharField(max_length=50)
-
-	def __str__(self):
-		return self.q1
-
-"""
-Model of PitStops
-"""
-class PitStops(models.Model):
-	lap = models.IntegerField()
-	driverID = models.ForeignKey('Driver')
-	raceID = models.ForeignKey('Race')
-	stop = models.IntegerField()
-	time = models.IntegerField()
-	duration = models.CharField(max_length=50)
-	milliseconds = models.IntegerField()
-
-	def __str__(self):
-		return self.duration
-
-"""
-Model of LapTimes
-"""
-class LapTimes(models.Model):
-	raceID = models.ForeignKey('Race')
-	driverID = models.ForeignKey('Driver')
-	lap = models.IntegerField()
-	position = models.IntegerField()
-	time = models.CharField(max_length=20)
-	milliseconds = models.IntegerField()
-
-	def __str__(self):
-		return self.time
-
-"""
-Model of DriverStandings
-"""
-class DriverStandings(models.Model):
-	raceID = models.ForeignKey('Race')
-	driverID = models.ForeignKey('Driver')
-	points = models.DecimalField(max_digits=20, decimal_places=10)
-	position = models.IntegerField()
-	positionText = models.CharField(max_length=50)
-	wins = models.IntegerField()
-
-	def __str__(self):
-		return self.points
-
-"""
-Model of Seasons
-"""
-class Seasons(models.Model):
-	year = models.IntegerField()
-
-	def __str__(self):
-		return self.year
-
-"""
-Model of Circuit
-"""
 class Circuit(models.Model):
-	name = models.CharField(max_length=50)
-	location = models.CharField(max_length=50)
-	country = models.CharField(max_length=50)
-	latitude = models.DecimalField(max_digits=20, decimal_places=10)
-	longitude = models.DecimalField(max_digits=20, decimal_places=10)
-	altitude = models.DecimalField(max_digits=20. decimal_places=10)
+    circuitid = models.IntegerField(db_column='circuitId', primary_key=True) # Field name made lowercase.
+    circuitref = models.CharField(db_column='circuitRef', max_length=255) # Field name made lowercase.
+    name = models.CharField(max_length=255)
+    location = models.CharField(max_length=255, blank=True)
+    country = models.CharField(max_length=255, blank=True)
+    lat = models.FloatField(blank=True, null=True)
+    lng = models.FloatField(blank=True, null=True)
+    alt = models.IntegerField(blank=True, null=True)
+    url = models.CharField(unique=True, max_length=255)
 
-	def __str__(self):
-		return self.name
+    def __unicode__(self):
+        return self.name;
+    class Meta:
+        managed = True
+        db_table = 'circuits'
+        verbose_name_plural = 'Circuits'
 
-"""
-Model of Race
-"""
+class ConstructorResult(models.Model):
+    constructorresultsid = models.IntegerField(db_column='constructorResultsId', primary_key=True) # Field name made lowercase.
+    raceid = models.IntegerField(db_column='raceId') # Field name made lowercase.
+    constructorid = models.IntegerField(db_column='constructorId') # Field name made lowercase.
+    points = models.FloatField(blank=True, null=True)
+    status = models.CharField(max_length=255, blank=True)
+
+    def __unicode__(self):
+        return 'Constructor ID: ' + str(self.constructorresultsid);
+
+    class Meta:
+        managed = True
+        db_table = 'constructorResults'
+
+
+class ConstructorStanding(models.Model):
+    constructorstandingsid = models.IntegerField(db_column='constructorStandingsId', primary_key=True) # Field name made lowercase.
+    raceid = models.IntegerField(db_column='raceId') # Field name made lowercase.
+    constructorid = models.IntegerField(db_column='constructorId') # Field name made lowercase.
+    points = models.FloatField()
+    position = models.IntegerField(blank=True, null=True)
+    positiontext = models.CharField(db_column='positionText', max_length=255, blank=True) # Field name made lowercase.
+    wins = models.IntegerField()
+
+    def __unicode__(self):
+        return 'Constructor Standings ID: ' + str(self.constructorstandingsid);
+
+    class Meta:
+        managed = True
+        db_table = 'constructorStandings'
+
+class Constructor(models.Model):
+    constructorid = models.IntegerField(db_column='constructorId', primary_key=True) # Field name made lowercase.
+    constructorref = models.CharField(db_column='constructorRef', max_length=255) # Field name made lowercase.
+    name = models.CharField(unique=True, max_length=255)
+    nationality = models.CharField(max_length=255, blank=True)
+    url = models.CharField(max_length=255)
+
+    def __unicode__(self):
+        return self.constructorref;
+
+    class Meta:
+        managed = True
+        db_table = 'constructors'
+
+class DriverStanding(models.Model):
+    driverstandingsid = models.IntegerField(db_column='driverStandingsId', primary_key=True) # Field name made lowercase.
+    raceid = models.IntegerField(db_column='raceId') # Field name made lowercase.
+    driverid = models.IntegerField(db_column='driverId') # Field name made lowercase.
+    points = models.FloatField()
+    position = models.IntegerField(blank=True, null=True)
+    positiontext = models.CharField(db_column='positionText', max_length=255, blank=True) # Field name made lowercase.
+    wins = models.IntegerField()
+
+    def __unicode__(self):
+        return 'Drivers Standings ID: ' + str(self.driverstandingsid);
+
+    class Meta:
+        managed = True
+        db_table = 'driverStandings'
+
+class Driver(models.Model):
+    driverid = models.IntegerField(db_column='driverId', primary_key=True) # Field name made lowercase.
+    driverref = models.CharField(db_column='driverRef', max_length=255) # Field name made lowercase.
+    number = models.IntegerField(blank=True, null=True)
+    code = models.CharField(max_length=3, blank=True)
+    forename = models.CharField(max_length=255)
+    surname = models.CharField(max_length=255)
+    dob = models.DateField(blank=True, null=True)
+    nationality = models.CharField(max_length=255, blank=True)
+    url = models.CharField(unique=True, max_length=255)
+
+    def __unicode__(self):
+        return self.forename + " " + self.surname;
+
+    class Meta:
+        managed = True
+        db_table = 'drivers'
+
+class Laptime(models.Model):
+    raceid = models.IntegerField(db_column='raceId') # Field name made lowercase.
+    driverid = models.IntegerField(db_column='driverId') # Field name made lowercase.
+    lap = models.IntegerField()
+    position = models.IntegerField(blank=True, null=True)
+    time = models.CharField(max_length=255, blank=True)
+    milliseconds = models.IntegerField(blank=True, null=True)
+
+    def __unicode__(self):
+        return 'Laptime Race ID: ' + str(self.raceid);
+
+    class Meta:
+        managed = True
+        db_table = 'lapTimes'
+
+class Pitstop(models.Model):
+    raceid = models.IntegerField(db_column='raceId') # Field name made lowercase.
+    driverid = models.IntegerField(db_column='driverId') # Field name made lowercase.
+    stop = models.IntegerField()
+    lap = models.IntegerField()
+    time = models.TimeField()
+    duration = models.CharField(max_length=255, blank=True)
+    milliseconds = models.IntegerField(blank=True, null=True)
+
+    def __unicode__(self):
+        return 'PitStop Race ID: ' + str(self.raceid);
+
+    class Meta:
+        managed = True
+        db_table = 'pitStops'
+
+class Qualifying(models.Model):
+    qualifyid = models.IntegerField(db_column='qualifyId', primary_key=True) # Field name made lowercase.
+    raceid = models.IntegerField(db_column='raceId') # Field name made lowercase.
+    driverid = models.IntegerField(db_column='driverId') # Field name made lowercase.
+    constructorid = models.IntegerField(db_column='constructorId') # Field name made lowercase.
+    number = models.IntegerField()
+    position = models.IntegerField(blank=True, null=True)
+    q1 = models.CharField(max_length=255, blank=True)
+    q2 = models.CharField(max_length=255, blank=True)
+    q3 = models.CharField(max_length=255, blank=True)
+
+    def __unicode__(self):
+        return 'Qualifying ID: ' + str(self.qualifyid);
+
+    class Meta:
+        managed = True
+        db_table = 'qualifying'
+
 class Race(models.Model):
-	year = models.IntegerField()
-	round = models.IntegerField()
-	circuitID = models.ForeignKey('Circuit')
-	name = models.CharField(max_length=50)
-	date = models.CharField(max_length=50)
-	time = models.CharField(max_length=50)
-	season = models.ForeignKey('Seasons')
+    raceid = models.IntegerField(db_column='raceId', primary_key=True) # Field name made lowercase.
+    year = models.IntegerField()
+    round = models.IntegerField()
+    circuitid = models.IntegerField(db_column='circuitId') # Field name made lowercase.
+    name = models.CharField(max_length=255)
+    date = models.DateField(blank=True, null=True)
+    time = models.TimeField(blank=True, null=True)
+    url = models.CharField(unique=True, max_length=255, blank=True)
 
-	def __str__(self):
-		return self.name
+    def __unicode__(self):
+        return 'Race ID: ' + self.raceid;
+
+    class Meta:
+        managed = True
+        db_table = 'races'
+
+class Result(models.Model):
+    resultid = models.IntegerField(db_column='resultId', primary_key=True) # Field name made lowercase.
+    raceid = models.IntegerField(db_column='raceId') # Field name made lowercase.
+    driverid = models.IntegerField(db_column='driverId') # Field name made lowercase.
+    constructorid = models.IntegerField(db_column='constructorId') # Field name made lowercase.
+    number = models.IntegerField()
+    grid = models.IntegerField()
+    position = models.IntegerField(blank=True, null=True)
+    positiontext = models.CharField(db_column='positionText', max_length=255) # Field name made lowercase.
+    positionorder = models.IntegerField(db_column='positionOrder') # Field name made lowercase.
+    points = models.FloatField()
+    laps = models.IntegerField()
+    time = models.CharField(max_length=255, blank=True)
+    milliseconds = models.IntegerField(blank=True, null=True)
+    fastestlap = models.IntegerField(db_column='fastestLap', blank=True, null=True) # Field name made lowercase.
+    rank = models.IntegerField(blank=True, null=True)
+    fastestlaptime = models.CharField(db_column='fastestLapTime', max_length=255, blank=True) # Field name made lowercase.
+    fastestlapspeed = models.CharField(db_column='fastestLapSpeed', max_length=255, blank=True) # Field name made lowercase.
+    statusid = models.IntegerField(db_column='statusId') # Field name made lowercase.
+
+    def __unicode__(self):
+        return "Race ID: " + self.raceid;
+
+    class Meta:
+        managed = True
+        db_table = 'results'
+
+class Season(models.Model):
+    year = models.IntegerField(primary_key=True)
+    url = models.CharField(unique=True, max_length=255)
+
+    def __unicode__(self):
+        return 'Race Year: ' + self.year;
+
+    class Meta:
+        managed = True
+        db_table = 'seasons'
+
+class Status(models.Model):
+    statusid = models.IntegerField(db_column='statusId', primary_key=True) # Field name made lowercase.
+    status = models.CharField(max_length=255)
+
+    def __unicode__(self):
+        return self.status;
+
+    class Meta:
+        managed = True
+        db_table = 'status'
+        verbose_name_plural = 'Statuses'
+

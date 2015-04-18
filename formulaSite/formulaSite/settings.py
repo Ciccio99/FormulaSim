@@ -63,9 +63,9 @@ DATABASES = {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
         'NAME': 'formulaDB',
         'USER': 'postgres',
-        'PASSWORD': '99Stefania99!',
+        'PASSWORD': 'password',
         'HOST': 'localhost',
-        'PORT': '8000'
+        'PORT': '5432'
     }
 }
 

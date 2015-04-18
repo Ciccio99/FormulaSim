@@ -22,7 +22,7 @@ class Circuits(models.Model):
     alt = models.IntegerField(blank=True, null=True)
     url = models.CharField(unique=True, max_length=255)
     class Meta:
-        managed = False
+        managed = True
         db_table = 'circuits'
 
 class Constructorresults(models.Model):
@@ -32,7 +32,7 @@ class Constructorresults(models.Model):
     points = models.FloatField(blank=True, null=True)
     status = models.CharField(max_length=255, blank=True)
     class Meta:
-        managed = False
+        managed = True
         db_table = 'constructorResults'
 
 class Constructorstandings(models.Model):
@@ -44,7 +44,7 @@ class Constructorstandings(models.Model):
     positiontext = models.CharField(db_column='positionText', max_length=255, blank=True) # Field name made lowercase.
     wins = models.IntegerField()
     class Meta:
-        managed = False
+        managed = True
         db_table = 'constructorStandings'
 
 class Constructors(models.Model):
@@ -54,7 +54,7 @@ class Constructors(models.Model):
     nationality = models.CharField(max_length=255, blank=True)
     url = models.CharField(max_length=255)
     class Meta:
-        managed = False
+        managed = True
         db_table = 'constructors'
 
 class Driverstandings(models.Model):
@@ -66,7 +66,7 @@ class Driverstandings(models.Model):
     positiontext = models.CharField(db_column='positionText', max_length=255, blank=True) # Field name made lowercase.
     wins = models.IntegerField()
     class Meta:
-        managed = False
+        managed = True
         db_table = 'driverStandings'
 
 class Drivers(models.Model):
@@ -80,7 +80,7 @@ class Drivers(models.Model):
     nationality = models.CharField(max_length=255, blank=True)
     url = models.CharField(unique=True, max_length=255)
     class Meta:
-        managed = False
+        managed = True
         db_table = 'drivers'
 
 class Laptimes(models.Model):
@@ -91,7 +91,7 @@ class Laptimes(models.Model):
     time = models.CharField(max_length=255, blank=True)
     milliseconds = models.IntegerField(blank=True, null=True)
     class Meta:
-        managed = False
+        managed = True
         db_table = 'lapTimes'
 
 class Pitstops(models.Model):
@@ -103,7 +103,7 @@ class Pitstops(models.Model):
     duration = models.CharField(max_length=255, blank=True)
     milliseconds = models.IntegerField(blank=True, null=True)
     class Meta:
-        managed = False
+        managed = True
         db_table = 'pitStops'
 
 class Qualifying(models.Model):
@@ -117,7 +117,7 @@ class Qualifying(models.Model):
     q2 = models.CharField(max_length=255, blank=True)
     q3 = models.CharField(max_length=255, blank=True)
     class Meta:
-        managed = False
+        managed = True
         db_table = 'qualifying'
 
 class Races(models.Model):
@@ -130,7 +130,7 @@ class Races(models.Model):
     time = models.TimeField(blank=True, null=True)
     url = models.CharField(unique=True, max_length=255, blank=True)
     class Meta:
-        managed = False
+        managed = True
         db_table = 'races'
 
 class Results(models.Model):
@@ -153,20 +153,20 @@ class Results(models.Model):
     fastestlapspeed = models.CharField(db_column='fastestLapSpeed', max_length=255, blank=True) # Field name made lowercase.
     statusid = models.IntegerField(db_column='statusId') # Field name made lowercase.
     class Meta:
-        managed = False
+        managed = True
         db_table = 'results'
 
 class Seasons(models.Model):
     year = models.IntegerField(primary_key=True)
     url = models.CharField(unique=True, max_length=255)
     class Meta:
-        managed = False
+        managed = True
         db_table = 'seasons'
 
 class Status(models.Model):
     statusid = models.IntegerField(db_column='statusId', primary_key=True) # Field name made lowercase.
     status = models.CharField(max_length=255)
     class Meta:
-        managed = False
+        managed = True
         db_table = 'status'
 
