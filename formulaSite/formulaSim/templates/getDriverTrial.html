@@ -1,0 +1,36 @@
+<div id='content'>
+	<div class="inner">
+		<h1>All Drivers<\h1>
+			{% for driver in driver_list %}
+			<p>
+				id:
+					{{ driver.driverid }}
+			</p>
+			<p>
+				Number:
+					{{ driver.number }}
+			</p>
+			<p>
+				Code:
+					{{ driver.code }}
+			</p>
+			<p>
+				First Name:
+					{{ driver.forename }}
+			</p>
+			<p>
+				Last Name:
+					{{ driver.surname }}
+			</p>
+			<p>
+				Born:
+					{{ driver.dob }}
+			</p>
+			<p>
+				Nationality:
+					{{ driver.nationality }}
+
+			</p>
+		{% endfor %}
+	</div>
+</div>

@@ -1,6 +1,8 @@
 from django.shortcuts import render
 from django.http import *
 
+from model import *
+
 # Create your views here.
 
 """
@@ -23,3 +25,12 @@ def raceSim(request):
 """
 Functions for simulation:
 """
+
+"""
+Queries database for all Drivers
+
+"""
+def showAllDrivers(request):
+	return render(request, 'getDriverTrial.html', {
+		'driver_list': Drivers.objects.all()
+		}
