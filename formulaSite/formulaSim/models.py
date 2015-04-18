@@ -109,7 +109,7 @@ class Driver(models.Model):
         db_table = 'drivers'
 
 class Laptime(models.Model):
-    raceid = models.IntegerField(db_column='raceId') # Field name made lowercase.
+    raceid = models.IntegerField(db_column='raceId', primary_key = True) # Field name made lowercase.
     driverid = models.IntegerField(db_column='driverId') # Field name made lowercase.
     lap = models.IntegerField()
     position = models.IntegerField(blank=True, null=True)
@@ -124,7 +124,7 @@ class Laptime(models.Model):
         db_table = 'lapTimes'
 
 class Pitstop(models.Model):
-    raceid = models.IntegerField(db_column='raceId') # Field name made lowercase.
+    raceid = models.IntegerField(db_column='raceId', primary_key = True) # Field name made lowercase.
     driverid = models.IntegerField(db_column='driverId') # Field name made lowercase.
     stop = models.IntegerField()
     lap = models.IntegerField()
@@ -168,7 +168,7 @@ class Race(models.Model):
     url = models.CharField(unique=True, max_length=255, blank=True)
 
     def __unicode__(self):
-        return 'Race ID: ' + self.raceid;
+        return 'Race ID: ' + str(self.raceid);
 
     class Meta:
         managed = True
@@ -195,7 +195,7 @@ class Result(models.Model):
     statusid = models.IntegerField(db_column='statusId') # Field name made lowercase.
 
     def __unicode__(self):
-        return "Race ID: " + self.raceid;
+        return "Race ID: " + str(self.raceid);
 
     class Meta:
         managed = True
@@ -206,7 +206,7 @@ class Season(models.Model):
     url = models.CharField(unique=True, max_length=255)
 
     def __unicode__(self):
-        return 'Race Year: ' + self.year;
+        return 'Race Year: ' + str(self.year);
 
     class Meta:
         managed = True
