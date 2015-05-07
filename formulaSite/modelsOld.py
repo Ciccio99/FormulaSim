@@ -84,6 +84,7 @@ class Drivers(models.Model):
         db_table = 'drivers'
 
 class Laptimes(models.Model):
+    lapid = models.IntegerField(primary_key = True)
     raceid = models.IntegerField(db_column='raceId') # Field name made lowercase.
     driverid = models.IntegerField(db_column='driverId') # Field name made lowercase.
     lap = models.IntegerField()
@@ -95,6 +96,7 @@ class Laptimes(models.Model):
         db_table = 'lapTimes'
 
 class Pitstops(models.Model):
+    pitid = models.IntegerField(primary_key = True)
     raceid = models.IntegerField(db_column='raceId') # Field name made lowercase.
     driverid = models.IntegerField(db_column='driverId') # Field name made lowercase.
     stop = models.IntegerField()

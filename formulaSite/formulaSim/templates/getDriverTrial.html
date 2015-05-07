@@ -1,36 +1,42 @@
 <div id='content'>
 	<div class="inner">
-		<h1>All Drivers<\h1>
-			{% for driver in driver_list %}
-			<p>
-				id:
-					{{ driver.driverid }}
-			</p>
-			<p>
-				Number:
-					{{ driver.number }}
-			</p>
-			<p>
-				Code:
-					{{ driver.code }}
-			</p>
-			<p>
-				First Name:
-					{{ driver.forename }}
-			</p>
-			<p>
-				Last Name:
-					{{ driver.surname }}
-			</p>
-			<p>
-				Born:
-					{{ driver.dob }}
-			</p>
-			<p>
-				Nationality:
-					{{ driver.nationality }}
+		<h1>All Drivers</h1>
+		{% for driver in driver_list %}
+			<ul>
 
-			</p>
+
+				<li>
+					id:
+						{{ driver.driverid }}
+				</li>
+				<li>
+					Number:
+						{{ driver.number }}
+				</li>
+				<li>
+					Code:
+						{{ driver.code }}
+				</li>
+				<li>
+					First Name:
+						{{ driver.forename }}
+				</li>
+				<li>
+					Last Name:
+						{{ driver.surname }}
+				</li>
+				<li>
+					Born:
+						{{ driver.dob }}
+				</li>
+				<li>
+					Nationality:
+						{{ driver.nationality }}
+				</li>
+				<li>
+					<a href="{{ driver.url }}">Wikipedia link</a>
+				</li>
+			</ul>
 		{% endfor %}
 	</div>
 </div>

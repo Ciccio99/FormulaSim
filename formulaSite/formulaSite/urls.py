@@ -9,4 +9,7 @@ urlpatterns = patterns('',
     # url(r'^blog/', include('blog.urls')),
 
     url(r'^admin/', include(admin.site.urls)),
+    url(r'^$', 'formulaSim.views.home'),
+    url(r'^simulations', 'formulaSim.views.raceSim'),
+    url(r'^drivers', 'formulaSim.views.drivers')
 )

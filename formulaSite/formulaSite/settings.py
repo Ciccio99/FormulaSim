@@ -61,8 +61,8 @@ WSGI_APPLICATION = 'formulaSite.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'formulaDB',
-        'USER': 'postgres',
+        'NAME': 'formuladb',
+        'USER': 'alberto',
         'PASSWORD': 'password',
         'HOST': 'localhost',
         'PORT': '5432'
