@@ -1,0 +1,22 @@
+{% extends "formulaSim/home.html" %}
+
+{% block mainContentBlock %}
+	<h3> The RaceSim </h3>
+	<br>
+
+	<form class='get-race-form' method='POST' action="{% url 'formulaSim.views.raceSim' %}" enctype="multipart/form-data">
+		{% csrf_token %}
+		<ul>
+			<span>{{ errorMessage }}</span>
+			{{the_form.as_ul}}
+		</ul>
+		<button type="submit" name="submit" value="Get Race">Get Race</button>
+	</form>
+
+	<br>
+
+	<h3>{{ race.name }}</h3>
+	<h4>{{ race.date }}</h4>
+	<h4>Race ID: {{ race.raceid}}</h4>
+
+{% endblock mainContentBlock %}
