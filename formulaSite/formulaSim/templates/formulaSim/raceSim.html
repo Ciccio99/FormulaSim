@@ -20,7 +20,6 @@
 		<button type="submit" name="submit" value="Get Race">Get Race</button>
 	</form>
 
-	DEBUG: {{serialized_drivers}}
 	{% if race %}
 		<br>
 		<h3>{{ race.name }}</h3>
@@ -45,8 +44,14 @@
 		</ul>
 	{% endif %}
 
+	<canvas id="c" width="600" height="300" style="border:1px solid #c3c3c3;">
+		Your browser does not support the HTML5 canvas tag.
+	</canvas>
+
 
 	<script type="text/javascript">
+		var c = document.getElementById("c");
+		var ctx = c.getContext("2d");
    		var json_drivers = {{ serialized_drivers|safe }};
    		var json_laptimes = {{ serialized_laptimes|safe }};
 
@@ -66,22 +71,29 @@
 			
 
 			this.updateSpeed = function(){
-				return this.trackLength / this.laptimes[this.curLap - 1].milliseconds;
+				this.curSpeed = (this.trackLength / this.laptimes[this.curLap].milliseconds) * 100;
 			};
 
 			this.move = function(){
 				if(this.curLap = 1)
-					this.curSpeed = this.trackLength / this.laptimes[0].milliseconds;
+					this.curSpeed = (this.trackLength / this.laptimes[0].milliseconds) * 100;
 				this.posX += this.curSpeed;
+				this.checkLapped();
 
 			};
 
 			this.checkLapped = function(){
-				if(this.posX >= (trackLength - 10))
-					this.posX = 0;
+				if(this.posX >= (this.trackLength))
+					this.posX = -20;
 				this.curLap += 1;
 				this.updateSpeed();
 			};
+
+			this.drawRacer = function(ctx){
+				ctx.fillStyle = "rgba(2, 150, 250, 1)"
+				ctx.fillRect(this.posX, this.posY, 10, 5);
+
+			}
 		};
 
 
@@ -96,18 +108,43 @@
 
 
 		function create_drivers(){
-			for(i = 0; i < json_drivers.length; i++){
+
+			for(var i = 0; i < json_drivers.length; i++){
 				var driverFields = json_drivers[i].fields;
-				var newDriver = new FormulaDriver(driverFields.surname, json_drivers[i].pk, 
-					get_laptimes(json_drivers[i].pk), 10, 300);
-				simulation_drivers.push(newDriver);
+				simulation_drivers.push( new FormulaDriver(driverFields.surname, json_drivers[i].pk, 
+					get_laptimes(json_drivers[i].pk), 10 + (12*i), 600));
 			}
 		}
 
 
 
 		create_drivers();
-   		console.log(simulation_drivers[0]);
+   		console.log(simulation_drivers[1]);
+   		function draw(){
+
+			
+
+	   		var c = document.getElementById("c");
+			var ctx = c.getContext("2d");
+			//ctx.fillStyle = "rgba(0, 0, 0, 0.05)";
+			//ctx.fillRect(0, 0, c.width, c.height);
+			ctx.clearRect(0,0, 600,300);
+			//Move cars and draw them
+			for(var i = 0; i < simulation_drivers.length; i++){
+				simulation_drivers[i].move();
+				ctx.fillStyle = "#FF0000";
+				ctx.fillRect(simulation_drivers[i].posX, simulation_drivers[i].posY,20,10);
+
+				ctx.fillText(simulation_drivers[i].lastname , simulation_drivers[i].posX + 25, simulation_drivers[i].posY + 8);
+				
+				//simulation_drivers[i].drawRacer(ctx);
+			}
+			
+			
+			}
+
+
+		setInterval(draw, 1);
 	</script>
 
 
