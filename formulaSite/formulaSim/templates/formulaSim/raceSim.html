@@ -1,5 +1,11 @@
 {% extends "formulaSim/home.html" %}
 {% load formulaSim_extras %}
+{% load staticfiles %}
+{% block extraLinksBlock %}
+
+	
+
+{% endblock extraLinksBlock %}
 
 {% block mainContentBlock %}
 	<h3> The RaceSim </h3>
@@ -14,7 +20,7 @@
 		<button type="submit" name="submit" value="Get Race">Get Race</button>
 	</form>
 
-	
+	DEBUG: {{serialized_drivers}}
 	{% if race %}
 		<br>
 		<h3>{{ race.name }}</h3>
@@ -27,25 +33,82 @@
 		<ul>
 			{% for driver in drivers %}
 				<li><h4>{{ driver.forename }} {{ driver.surname }} {{ driver.driverid }}</h4></li>
+				{% comment %}
 				<ul>
-					meow
-					{% comment %}
-					{% for id in drivers_id %}
-						{% for lap in laptimesdict.id %}
-							<li> Lap {{ lap.lap }} time: {{ lap.time }}</li>
-						{% endfor %}
-					{% endfor %}
-					{% endcomment%}
-
 					{% for lap in race.raceid|get_laptime_list:driver.driverid %}
 						<li> Lap {{ lap.lap }} time: {{ lap.time }}</li>
 					{% endfor %}
 
 				</ul>
+				{% endcomment %}
 			{% endfor %}
 		</ul>
 	{% endif %}
 
+
+	<script type="text/javascript">
+   		var json_drivers = {{ serialized_drivers|safe }};
+   		var json_laptimes = {{ serialized_laptimes|safe }};
+
+   		var simulation_drivers = [];
+
+   		function FormulaDriver(lastname, driverid, laptimes, startY, canvasW){
+			this.lastname = lastname;
+			this.driverid = driverid;
+			this.laptimes = laptimes;
+			this.trackLength = canvasW;
+			this.curPosition = 0;
+			this.curLap = 1;
+			this.posX = 0;
+			this.posY = startY;
+			this.curSpeed = 0;
+
+			
+
+			this.updateSpeed = function(){
+				return this.trackLength / this.laptimes[this.curLap - 1].milliseconds;
+			};
+
+			this.move = function(){
+				if(this.curLap = 1)
+					this.curSpeed = this.trackLength / this.laptimes[0].milliseconds;
+				this.posX += this.curSpeed;
+
+			};
+
+			this.checkLapped = function(){
+				if(this.posX >= (trackLength - 10))
+					this.posX = 0;
+				this.curLap += 1;
+				this.updateSpeed();
+			};
+		};
+
+
+		function get_laptimes(driverid){
+			var laptimeslist = []
+			for(i = 0; i < json_laptimes.length; i++){
+				if(json_laptimes[i].fields.driverid == driverid)
+					laptimeslist.push(json_laptimes[i].fields);
+			}
+			return laptimeslist;
+		}
+
+
+		function create_drivers(){
+			for(i = 0; i < json_drivers.length; i++){
+				var driverFields = json_drivers[i].fields;
+				var newDriver = new FormulaDriver(driverFields.surname, json_drivers[i].pk, 
+					get_laptimes(json_drivers[i].pk), 10, 300);
+				simulation_drivers.push(newDriver);
+			}
+		}
+
+
+
+		create_drivers();
+   		console.log(simulation_drivers[0]);
+	</script>
 
 
 {% endblock mainContentBlock %}

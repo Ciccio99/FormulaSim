@@ -4,6 +4,7 @@ from django.template import RequestContext
 from django.views import generic
 from formulaSim.models import *
 from formulaSim.forms import *
+from django.core import serializers
 import pdb; 
 
 
@@ -44,6 +45,9 @@ def raceSim(request):
 			# Filter through our Race models for a race with the given year and round
 			zeRace = get_or_none(Race, year = form.cleaned_data['year'], round = form.cleaned_data['round'])
 			if(zeRace != None):
+				# Load JSON serializer
+				json_serializer = serializers.get_serializer("json")()
+
 				dictionary.update({'race' : zeRace})
 				
 				# Getting a list of all the final results (One for each driver for that race)
@@ -54,21 +58,15 @@ def raceSim(request):
 				drivers_id  = []
 				for result in race_results:
 					drivers_id.append(result.driverid) 
-				dictionary.update({'drivers_id' : drivers_id})
 				# Getting all drivers based on the driver IDs in the race
 				drivers = Driver.objects.filter(driverid__in = drivers_id)
 				dictionary.update({"drivers" : drivers})
 
 
-				# # Creating a dictionary for laptimes, where the KEY is a driver id and 
-				# # its object is a list of each laptime
-				# laptimesdict = {}
-				# for driver in drivers:
-
-				# 	driverlaps = Laptime.objects.filter(driverid = driver.driverid).filter(raceid = zeRace.raceid)
-				# 	laptimesdict.update({driver.driverid : driverlaps})
-
-				# dictionary.update({'laptimesdict' : laptimesdict})
+				serialized_drivers = serializers.serialize("json", drivers)
+				dictionary.update({'serialized_drivers' : serialized_drivers})
+				serialized_laptimes = serializers.serialize("json", Laptime.objects.filter(raceid = zeRace.raceid))
+				dictionary.update({'serialized_laptimes' : serialized_laptimes})
 
 				return render(request, 'formulaSim/raceSim.html', dictionary)
 			else:

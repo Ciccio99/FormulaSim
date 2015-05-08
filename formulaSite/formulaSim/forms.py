@@ -5,16 +5,8 @@ from formulaSim.models import *
 
 
 # Form used to select which race to simulate
-class GetRaceForm(forms.ModelForm):
-
+class GetRaceForm(forms.Form):
+	year = forms.IntegerField(widget=forms.Select(choices=[(i,i) for i in range(2011,2016)]))
+	round = forms.IntegerField(widget=forms.Select(choices=[(i,i) for i in range(1,21)]))
 	# Take fields directly from Race model for ease
-	class Meta:
-		model = Race
-
-		fields = ('year', 'round')
-
-		widgets = {
-            'year' : forms.NumberInput(attrs = {'Placeholder' : 'Season Year'}),
-            'round' : forms.NumberInput(attrs = {'Placeholder' : 'Race Round'}),
-            }
-
+		
