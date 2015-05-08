@@ -6,17 +6,29 @@
 
 	<form class='get-race-form' method='POST' action="{% url 'formulaSim.views.raceSim' %}" enctype="multipart/form-data">
 		{% csrf_token %}
+		<span>{{ errorMessage }}</span>
 		<ul>
-			<span>{{ errorMessage }}</span>
 			{{the_form.as_ul}}
 		</ul>
 		<button type="submit" name="submit" value="Get Race">Get Race</button>
 	</form>
 
-	<br>
+	
+	{% if race %}
+		<br>
+		<h3>{{ race.name }}</h3>
+		<h4>{{ race.date }}</h4>
+		<h4>Race ID: {{ race.raceid}}</h4>
+	{% endif %}
+	{% if drivers %}
+		<br>
+		<ul>
+			{% for driver in drivers %}
+				<li>{{ driver.forename }} {{ driver.surname }}</li>
+			{% endfor %}
+		</ul>
+	{% endif %}
 
-	<h3>{{ race.name }}</h3>
-	<h4>{{ race.date }}</h4>
-	<h4>Race ID: {{ race.raceid}}</h4>
+
 
 {% endblock mainContentBlock %}

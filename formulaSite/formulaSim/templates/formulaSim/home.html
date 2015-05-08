@@ -1,6 +1,56 @@
 <!DOCTYPE html>
-
+{% load staticfiles %}
 <html>
+	<head>
+		<title>FormulaSim</title>
+		<link rel="stylesheet" type="text/css" href="{% static 'formulaSim/style.css' %}">
+	</head>
+
+{% comment %}
+	<div class="wrapper">
+		<header>
+			<div class="inner">
+				<div id="startBanner">
+					<img src ="{% static 'formulaSim\images\checkerFlag.jpg' %}" alt="banner" />
+				</div>
+				<div id="logo">
+		<a href="/">
+			<img src ="{% static 'formulaSim\images\logo.png' %}" id="logo" />
+		</a>
+				</div>
+				
+				<nav>
+					<ul>
+						<li>
+							<a href="/">
+								<img src="{% static 'formulaSim\images\home.png' %}" id="home" />
+								<span>Home</span>
+							</a>
+						</li>
+						<li>
+							<a href="/raceSim">
+								<img src="{% static 'formulaSim\images\raceRecreate.png' %}" id="race" />
+								<span>Race-Recreation</span>
+							</a>
+						</li>
+						<li>
+							<a href="/about">
+								<img src="{% static 'formulaSim\images\about.png' %}" id="about" />
+								<span>About Us</span>
+							</a>
+						</li>
+					</ul>
+				</nav>
+				<div class="endBanner">
+					<img src="{% static 'formulaSim\images\checkerFlag.jpg' %}" alt="bannerEnd" />
+				</div>
+			</div>
+		</header>
+	</div>
+{% endcomment %}
+
+
+
 	<body>
 		<h2> Welcome to FormulaSim </h2>
 
@@ -10,5 +60,11 @@
 		{% endblock mainContentBlock %}
 
 	</body>
+
+	<footer>
+			<div class="inner">
+				CSCI 320 - Formula One Race Recreation
+			</div>
+    </footer>
 </html>
 

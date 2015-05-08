@@ -43,11 +43,16 @@ def raceSim(request):
 
 			# Filter through our Race models for a race with the given year and round
 			zeRace = get_or_none(Race, year = form.cleaned_data['year'], round = form.cleaned_data['round'])
-			print "I'm HURRRR"
 			if(zeRace != None):
-
 				dictionary.update({'race' : zeRace})
+				race_results = Result.objects.filter(raceid = zeRace.raceid)
+				dictionary.update({"race_results" : race_results})
+				drivers_id  = []
+				for result in race_results:
+					drivers_id.append(result.driverid) 
 
+				drivers = Driver.objects.filter(driverid__in = drivers_id)
+				dictionary.update({"drivers" : drivers})
 				return render(request, 'formulaSim/raceSim.html', dictionary)
 			else:
 				errorMessage = "No race exists with the given parameters!"
