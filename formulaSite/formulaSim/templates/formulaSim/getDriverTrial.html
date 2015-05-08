@@ -1,3 +1,12 @@
+{% extends "formulaSim/home.html" %}
+{% load formulaSim_extras %}
+{% load staticfiles %}
+		
+		{% block extraLinksBlock %}
+			<link rel="stylesheet" type="text/css" href="{% static 'formulaSim/driverStyle.css' %}">
+		{% endblock extraLinksBlock %}
+{% block mainContentBlock %}
+{% comment %}
 <div id='content'>
 	<div class="inner">
 		<h1>All Drivers</h1>
@@ -40,3 +49,26 @@
 		{% endfor %}
 	</div>
 </div>
+{% endcomment %}
+
+
+<div class='Patients-Container'>
+          {% for driver in driver_list %}
+              <a href="{{ driver.url}}" onClick='privacyWarning(event);'>
+                  <div class='Patient-Card'>
+                          <ul class='Card-Info'>
+                              <li class='Card-Name'>{{ driver.forename }} {{ driver.surname }}</li>
+                              <li class='Card-Username'>Birthdate: {{ driver.dob }}</li>
+                              
+                                <li class='Card-Age'>{{ driver.nationality }}</li>
+                                
+                            </ul>
+                  </div>
+              </a>
+          {% empty %}
+            <h3 class='No-Patients-Message'>No Drivers</h3>
+          {% endfor %}
+        </div>
+{% endblock mainContentBlock %}
+
+

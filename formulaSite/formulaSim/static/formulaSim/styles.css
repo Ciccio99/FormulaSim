@@ -1,6 +1,11 @@
+@import url('resetStyle.css');
+
+
+
 html {
 	height: 100%;
 	width: 100%;
+	font-size: 60%
 }
 
 body {
@@ -13,6 +18,32 @@ body {
 h1,h2,h3,h4,h5,h6 {
 	color:#003B57;
 	margin:0;
+}
+
+
+.race-info-container{
+	font: normal 300 1.8rem Helvetica, Arial, sans-serif;
+
+	height: 100%;
+	width: 100%;
+	margin: 2rem auto 0 auto;
+	display: -webkit-box;      /* OLD - iOS 6-, Safari 3.1-6 */
+	display: -moz-box;         /* OLD - Firefox 19- (buggy but mostly works) */
+	display: -ms-flexbox;      /* TWEENER - IE 10 */
+	display: -webkit-flex;     /* NEW - Chrome */
+	display: flex;
+	flex-flow: row wrap;
+	-webkit-flex-flow: row wrap;
+
+	justify-content: center;	
+	
+
+	box-sizing: border-box;
+	padding: 10em
+}
+
+h2{
+	font-size: 2rem;
 }
 
 .inner {

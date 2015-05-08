@@ -19,17 +19,21 @@
 		</ul>
 		<button type="submit" name="submit" value="Get Race">Get Race</button>
 	</form>
-
+	<div class='race-info-container'>
 	{% if race %}
 		<br>
-		<h3>{{ race.name }}</h3>
-		<h4>{{ race.date }}</h4>
-		<h4>Race ID: {{ race.raceid}}</h4>
+		<div style='display=block; width=100%'>
+			<h3>{{ race.name }}</h3>
+			<h4>{{ race.date }}</h4>
+			<h4>Race ID: {{ race.raceid}}</h4>
+		</div>
+		<br>
+		<br>
 	{% endif %}
 	{% if drivers %}
 		<br>
 		{{drivers_id}}
-		<ul>
+		<ul style='display=block'>
 			{% for driver in drivers %}
 				<li><h4>{{ driver.forename }} {{ driver.surname }} {{ driver.driverid }}</h4></li>
 				{% comment %}
@@ -43,6 +47,7 @@
 			{% endfor %}
 		</ul>
 	{% endif %}
+</div>
 
 	<canvas id="c" width="600" height="300" style="border:1px solid #c3c3c3;">
 		Your browser does not support the HTML5 canvas tag.
@@ -71,12 +76,12 @@
 			
 
 			this.updateSpeed = function(){
-				this.curSpeed = (this.trackLength / this.laptimes[this.curLap].milliseconds) * 100;
+				this.curSpeed = (this.trackLength / this.laptimes[this.curLap].milliseconds) * 10;
 			};
 
 			this.move = function(){
 				if(this.curLap = 1)
-					this.curSpeed = (this.trackLength / this.laptimes[0].milliseconds) * 100;
+					this.curSpeed = (this.trackLength / this.laptimes[0].milliseconds) * 10;
 				this.posX += this.curSpeed;
 				this.checkLapped();
 
@@ -99,7 +104,7 @@
 
 		function get_laptimes(driverid){
 			var laptimeslist = []
-			for(i = 0; i < json_laptimes.length; i++){
+			for(var i = 0; i < json_laptimes.length; i++){
 				if(json_laptimes[i].fields.driverid == driverid)
 					laptimeslist.push(json_laptimes[i].fields);
 			}
@@ -119,7 +124,7 @@
 
 
 		create_drivers();
-   		console.log(simulation_drivers[1]);
+   		console.log(simulation_drivers);
    		function draw(){
 
 			
