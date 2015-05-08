@@ -4,7 +4,7 @@ from django.template import RequestContext
 from django.views import generic
 from formulaSim.models import *
 from formulaSim.forms import *
-
+import pdb; 
 
 
 def get_or_none(model, *args, **kwargs):
@@ -38,27 +38,43 @@ def raceSim(request):
 		
 		form = GetRaceForm(data = request.POST)
 
-		#If the form is cleaned out, proceed
+		# If the form is cleaned out, proceed
 		if form.is_valid():
 
 			# Filter through our Race models for a race with the given year and round
 			zeRace = get_or_none(Race, year = form.cleaned_data['year'], round = form.cleaned_data['round'])
 			if(zeRace != None):
 				dictionary.update({'race' : zeRace})
+				
+				# Getting a list of all the final results (One for each driver for that race)
 				race_results = Result.objects.filter(raceid = zeRace.raceid)
 				dictionary.update({"race_results" : race_results})
+
+				# Getting a list of all driver IDs so that they can be used for filtering purposes
 				drivers_id  = []
 				for result in race_results:
 					drivers_id.append(result.driverid) 
-
+				dictionary.update({'drivers_id' : drivers_id})
+				# Getting all drivers based on the driver IDs in the race
 				drivers = Driver.objects.filter(driverid__in = drivers_id)
 				dictionary.update({"drivers" : drivers})
+
+
+				# # Creating a dictionary for laptimes, where the KEY is a driver id and 
+				# # its object is a list of each laptime
+				# laptimesdict = {}
+				# for driver in drivers:
+
+				# 	driverlaps = Laptime.objects.filter(driverid = driver.driverid).filter(raceid = zeRace.raceid)
+				# 	laptimesdict.update({driver.driverid : driverlaps})
+
+				# dictionary.update({'laptimesdict' : laptimesdict})
+
 				return render(request, 'formulaSim/raceSim.html', dictionary)
 			else:
 				errorMessage = "No race exists with the given parameters!"
-		
-		
-
+		else:
+			errorMessage = "All Fields Must be filled out!"
 	#If request is not a POST
 	dictionary.update({'errorMessage' : errorMessage})
 	return render(request, 'formulaSim/raceSim.html', dictionary)

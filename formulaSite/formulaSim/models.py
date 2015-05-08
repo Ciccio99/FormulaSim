@@ -120,6 +120,7 @@ class Laptime(models.Model):
         return 'Laptime Race ID: ' + str(self.raceid);
 
     class Meta:
+        ordering = ['lap']
         managed = True
         db_table = 'lapTimes'
 

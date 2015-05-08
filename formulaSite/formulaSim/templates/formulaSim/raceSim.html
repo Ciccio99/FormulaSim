@@ -1,4 +1,5 @@
 {% extends "formulaSim/home.html" %}
+{% load formulaSim_extras %}
 
 {% block mainContentBlock %}
 	<h3> The RaceSim </h3>
@@ -22,9 +23,25 @@
 	{% endif %}
 	{% if drivers %}
 		<br>
+		{{drivers_id}}
 		<ul>
 			{% for driver in drivers %}
-				<li>{{ driver.forename }} {{ driver.surname }}</li>
+				<li><h4>{{ driver.forename }} {{ driver.surname }} {{ driver.driverid }}</h4></li>
+				<ul>
+					meow
+					{% comment %}
+					{% for id in drivers_id %}
+						{% for lap in laptimesdict.id %}
+							<li> Lap {{ lap.lap }} time: {{ lap.time }}</li>
+						{% endfor %}
+					{% endfor %}
+					{% endcomment%}
+
+					{% for lap in race.raceid|get_laptime_list:driver.driverid %}
+						<li> Lap {{ lap.lap }} time: {{ lap.time }}</li>
+					{% endfor %}
+
+				</ul>
 			{% endfor %}
 		</ul>
 	{% endif %}
