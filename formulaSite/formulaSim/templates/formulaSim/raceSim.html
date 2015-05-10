@@ -28,6 +28,7 @@
 			<h4>Race ID: {{ race.raceid}}</h4>
 		</div>
 		<br>
+
 		<br>
 	{% endif %}
 	{% if drivers %}
@@ -55,49 +56,82 @@
 
 
 	<script type="text/javascript">
+		// Initial variables
+		// The cnavas and its context
 		var c = document.getElementById("c");
 		var ctx = c.getContext("2d");
+
+		// Grabbing the WIDTH and HEIGHT from the canvas DOM
+		// Creating lists of the necessary models drivers, laps, etc
+		var WIDTH = c.width;
+		var HEIGHT = c.height;
    		var json_drivers = {{ serialized_drivers|safe }};
    		var json_laptimes = {{ serialized_laptimes|safe }};
+   		var json_results = {{ serialized_results|safe }};
+   		var json_status = {{ serialized_status|safe }};
 
    		var simulation_drivers = [];
+   		var TOTAL_CIRCUIT_LAPS = 0;
 
-   		function FormulaDriver(lastname, driverid, laptimes, startY, canvasW){
+   		function FormulaDriver(lastname, driverid, result, laptimes, startY){
 			this.lastname = lastname;
 			this.driverid = driverid;
+			this.results = result;
+			this.curStatus = null;
 			this.laptimes = laptimes;
-			this.trackLength = canvasW;
+			this.lapLength = 0;
 			this.curPosition = 0;
 			this.curLap = 1;
+			this.totalLapCount = this.laptimes.length;
 			this.posX = 0;
 			this.posY = startY;
 			this.curSpeed = 0;
+			this.retired = false;
 
+			
 			
 
 			this.updateSpeed = function(){
-				this.curSpeed = (this.trackLength / this.laptimes[this.curLap].milliseconds) * 10;
+				// speed is based off of the laptime of the current lap
+				this.curSpeed = (this.lapLength / this.laptimes[this.curLap].milliseconds) * 1000;
 			};
 
 			this.move = function(){
-				if(this.curLap = 1)
-					this.curSpeed = (this.trackLength / this.laptimes[0].milliseconds) * 10;
-				this.posX += this.curSpeed;
-				this.checkLapped();
+				//Check if driver is retired from race
+				if(this.curLap > this.totalLapCount){
+					this.retired = true;
+				}
+				//If the driver has not yet retired from the race
+				if(!this.retired){
+					if(this.curLap == 1){
+						this.curSpeed = (this.lapLength / this.laptimes[0].milliseconds) * 1000;
+					}
+					this.posX += this.curSpeed;
+					this.checkLapped();
+				}
+				//else do nothing, they're retired, silly!
 
 			};
 
 			this.checkLapped = function(){
-				if(this.posX >= (this.trackLength))
-					this.posX = -20;
-				this.curLap += 1;
-				this.updateSpeed();
+				//If the racer reaches the end of the track/canvas, move them to the start of the canvas
+				if(this.posX >= this.lapLength * this.curLap){
+					this.curLap += 1;
+					this.updateSpeed();
+				}
 			};
 
-			this.drawRacer = function(ctx){
-				ctx.fillStyle = "rgba(2, 150, 250, 1)"
-				ctx.fillRect(this.posX, this.posY, 10, 5);
-
+			this.drawRacer = function(){
+				if(!this.retired){
+					ctx.fillStyle = "#FF0000";
+					ctx.fillRect(this.posX, this.posY, 20, 10);
+					ctx.fillText(this.lastname + " " + this.curLap, this.posX + 25, this.posY + 8);
+				}
+				else{
+					ctx.fillStyle = "#FFFFFF";
+					ctx.fillRect(this.posX, this.posY, 20, 10);
+					ctx.fillText(this.lastname + " " + this.curStatus, this.posX - 30, this.posY + 8);
+				}
 			}
 		};
 
@@ -111,42 +145,61 @@
 			return laptimeslist;
 		}
 
+		function get_driver_results(driverid){
+			for(var i = 0; i < json_results.length; i++){
+				if(json_results[i].fields.driverid == driverid)
+					return json_results[i];
+			}
+			// If there are no results, for some reason, return a null
+			return null;
+		}
 
+		function set_lap_length(){
+			return (WIDTH / TOTAL_CIRCUIT_LAPS);
+		}
+
+		function get_final_status(driver){
+			for(var i = 0; i < json_status.length; i++){
+				if(json_status[i].pk == driver.results.fields.statusid){
+					if(json_status[i].pk == 1){
+						//Taking advantage of access to the driver status to get the total lap count at a circuit
+						//because the track model doesn't hold this information for some reason
+						if(TOTAL_CIRCUIT_LAPS == 0)
+							TOTAL_CIRCUIT_LAPS = driver.totalLapCount;
+					}
+					return json_status[i].fields.status_name;
+				}
+			}
+			return null;
+		}
+
+		// Creates all the driver  objects based on the json file given at the start
 		function create_drivers(){
-
 			for(var i = 0; i < json_drivers.length; i++){
 				var driverFields = json_drivers[i].fields;
-				simulation_drivers.push( new FormulaDriver(driverFields.surname, json_drivers[i].pk, 
-					get_laptimes(json_drivers[i].pk), 10 + (12*i), 600));
+				var newDriver = new FormulaDriver(driverFields.surname, json_drivers[i].pk, get_driver_results(json_drivers[i].pk), get_laptimes(json_drivers[i].pk), 10 + (12*i));
+				newDriver.curStatus = get_final_status( newDriver );
+				newDriver.lapLength = set_lap_length();
+				simulation_drivers.push( newDriver );
 			}
 		}
 
 
 
 		create_drivers();
-   		console.log(simulation_drivers);
+   		console.log(TOTAL_CIRCUIT_LAPS);
    		function draw(){
-
-			
-
-	   		var c = document.getElementById("c");
-			var ctx = c.getContext("2d");
-			//ctx.fillStyle = "rgba(0, 0, 0, 0.05)";
-			//ctx.fillRect(0, 0, c.width, c.height);
-			ctx.clearRect(0,0, 600,300);
+			// Clears the canvas so that old stuff doesn't remain
+			ctx.clearRect(0,0, WIDTH, HEIGHT);
 			//Move cars and draw them
 			for(var i = 0; i < simulation_drivers.length; i++){
 				simulation_drivers[i].move();
-				ctx.fillStyle = "#FF0000";
-				ctx.fillRect(simulation_drivers[i].posX, simulation_drivers[i].posY,20,10);
-
-				ctx.fillText(simulation_drivers[i].lastname , simulation_drivers[i].posX + 25, simulation_drivers[i].posY + 8);
+				simulation_drivers[i].drawRacer();
 				
-				//simulation_drivers[i].drawRacer(ctx);
 			}
 			
 			
-			}
+		}
 
 
 		setInterval(draw, 1);

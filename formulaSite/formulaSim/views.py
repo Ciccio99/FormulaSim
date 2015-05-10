@@ -67,6 +67,10 @@ def raceSim(request):
 				dictionary.update({'serialized_drivers' : serialized_drivers})
 				serialized_laptimes = serializers.serialize("json", Laptime.objects.filter(raceid = zeRace.raceid))
 				dictionary.update({'serialized_laptimes' : serialized_laptimes})
+				serialized_results = serializers.serialize("json", race_results)
+				dictionary.update({'serialized_results' : serialized_results})
+				serialized_status = serializers.serialize("json", Status.objects.all())
+				dictionary.update({'serialized_status' : serialized_status})
 
 				return render(request, 'formulaSim/raceSim.html', dictionary)
 			else:

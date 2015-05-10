@@ -217,10 +217,10 @@ class Season(models.Model):
 
 class Status(models.Model):
     statusid = models.IntegerField(db_column='statusId', primary_key=True) # Field name made lowercase.
-    status = models.CharField(max_length=255)
+    status_name = models.CharField(db_column='status',max_length=255)
     
     def __unicode__(self):
-        return self.status;
+        return self.status_name;
 
     class Meta:
         managed = True
