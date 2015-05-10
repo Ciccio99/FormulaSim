@@ -93,14 +93,15 @@
 
 			this.updateSpeed = function(){
 				// speed is based off of the laptime of the current lap
-				this.curSpeed = (this.lapLength / this.laptimes[this.curLap].milliseconds) * 1000;
+				if(!this.retired && this.laptimes[this.curLap] != null){
+					this.curSpeed = (this.lapLength / this.laptimes[this.curLap].milliseconds) * 1000;
+				}
 			};
 
 			this.move = function(){
 				//Check if driver is retired from race
-				if(this.curLap > this.totalLapCount){
-					this.retired = true;
-				}
+				this.check_retired();
+
 				//If the driver has not yet retired from the race
 				if(!this.retired){
 					if(this.curLap == 1){
@@ -117,22 +118,35 @@
 				//If the racer reaches the end of the track/canvas, move them to the start of the canvas
 				if(this.posX >= this.lapLength * this.curLap){
 					this.curLap += 1;
+					this.check_retired();
 					this.updateSpeed();
 				}
 			};
 
 			this.drawRacer = function(){
 				if(!this.retired){
+					ctx.fillStyle = "#FFFFFF";
+					ctx.beginPath();
+					ctx.arc(this.posX, this.posY, 5, 0, 2 * Math.PI, true);
+					ctx.fill();
+					ctx.closePath();
+					/*
 					ctx.fillStyle = "#FF0000";
 					ctx.fillRect(this.posX, this.posY, 20, 10);
 					ctx.fillText(this.lastname + " " + this.curLap, this.posX + 25, this.posY + 8);
+					*/
 				}
 				else{
 					ctx.fillStyle = "#FFFFFF";
 					ctx.fillRect(this.posX, this.posY, 20, 10);
 					ctx.fillText(this.lastname + " " + this.curStatus, this.posX - 30, this.posY + 8);
 				}
-			}
+			};
+
+			this.check_retired = function(){
+				if(this.curLap > this.totalLapCount && this.retired == false)
+					this.retired = true;
+			};
 		};
 
 
@@ -194,8 +208,7 @@
 			//Move cars and draw them
 			for(var i = 0; i < simulation_drivers.length; i++){
 				simulation_drivers[i].move();
-				simulation_drivers[i].drawRacer();
-				
+				simulation_drivers[i].drawRacer();	
 			}
 			
 			
