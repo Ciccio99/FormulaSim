@@ -106,7 +106,6 @@
 			this.radiusPos = radiusPos;
 			this.posAngle = -90;
 			this.circumSpeed = 0;
-			
 			this.driverCircum = (2 * Math.PI * this.radiusPos);
 			
 
@@ -125,19 +124,14 @@
 			this.move = function(){
 				//Check if driver is retired from race
 				this.check_retired();
+
+
 				//If the driver has not yet retired from the race
 				if(!this.retired){
-
-					/*
-					if(this.curLap == 1){
-						this.curSpeed = (this.lapLength / this.laptimes[0].milliseconds) * 1000;
-					}
-					this.posX += this.curSpeed;
-					*/
 					if(this.curLap == 1){
 						this.updateSpeed();
 					}
-					this.posAngle += (this.circumSpeed / this.driverCircum * 360) * 10000;
+					this.posAngle += (this.circumSpeed / this.driverCircum * 360) * 1000;
 					this.checkLapped();
 				}
 				
@@ -150,15 +144,7 @@
 
 			this.checkLapped = function(){
 				//If the racer reaches the end of the track/canvas, move them to the start of the canvas
-				/*
-				if(this.posX >= this.lapLength * this.curLap){
-					this.curLap += 1;
-					this.check_retired();
-					this.updateSpeed();
-				}
-				*/
-				if(this.driverid == 3)
-						console.log('LEWIS LAP COUNT:' + LAP_ANGLE);
+				
 				if(this.posAngle >= (LAP_ANGLE * this.curLap) - 90 && !this.retired){
 					this.curLap += 1;
 					this.check_retired();
@@ -172,43 +158,29 @@
 
 			this.drawRacer = function(){
 				if(!this.retired){
-					/*
-					ctx.fillStyle = "#FFFFFF";
-					ctx.beginPath();
-					ctx.arc(this.posX, this.posY, 5, 0, 2 * Math.PI, true);
-					ctx.fill();
-					ctx.closePath();
-					ctx.fillText(this.lastname + " " + this.curLap, this.posX + 25, this.posY + 8);
-					*/
+					
 
 					ctx.beginPath();
 					ctx.arc(WIDTH / 2, HEIGHT / 2, this.radiusPos, degToRad(-90), degToRad(this.posAngle), false);
 					ctx.lineWidth = CAR_WIDTH;
-					if(retiredDriverCount >= simulation_drivers.length - 1){
-						ctx.strokeStyle = 'red';
-					}
-					else
-						ctx.strokeStyle = 'white';
+					ctx.strokeStyle = 'white';
 					ctx.stroke();
 					ctx.closePath();
 				}
 				else{
-					/*
 					ctx.beginPath();
-					ctx.fillStyle = "#FFFFFF";
-					ctx.fillRect(this.posX, this.posY, 20, 10);
-					ctx.fillText(this.lastname + " " + this.curStatus, this.posX - 30, this.posY + 8);
+					ctx.arc(WIDTH / 2, HEIGHT / 2, this.radiusPos, degToRad(-90), degToRad(this.posAngle), false);
+					ctx.lineWidth = CAR_WIDTH;
+					ctx.strokeStyle = 'red';
+					ctx.stroke();
 					ctx.closePath();
-					*/
 				}
 			};
 					
 			this.check_retired = function(){
 				if(this.curLap > this.totalLapCount && this.retired == false){
 					this.retired = true;
-					retiredDriverCount += 1;
-
-					console.log("Retired drivers: " + retiredDriverCount + " number of drivers: " + simulation_drivers.length + " cur lap: " + this.curLap + " totLaps: " + this.totalLapCount + " driverid: " + this.driverid);					
+					retiredDriverCount += 1;					
 				}
 			};
 		};
@@ -273,7 +245,6 @@
 		// else return false
 		function isRaceFinished(){
 			if(retiredDriverCount >= simulation_drivers.length){
-				console.log(retiredDriverCount);
 				return true;
 			}
 			else{
@@ -310,11 +281,13 @@
 				simulation_drivers[i].drawRacer();	
 			}
 
+			/*
 			if(isRaceFinished()){
 				console.log("FINISHED");
 				draw();
 				clearInterval(raceInterval);
 			}
+			*/
 			
 		}
 
