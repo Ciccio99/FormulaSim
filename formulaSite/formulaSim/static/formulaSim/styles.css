@@ -20,26 +20,39 @@ h1,h2,h3,h4,h5,h6 {
 	margin:0;
 }
 
+.main-content-container{
+	display: flex;
+	justify-content: space-between;
+}
+
+.race-title-container{
+	font: normal 500 2rem Helvetica, Arial, sans-serif;
+	box-sizing: border-box;
+	padding:  0 2rem 2rem 2rem;
+	text-align: center;
+}
 
 .race-info-container{
 	font: normal 300 1.8rem Helvetica, Arial, sans-serif;
-
-	height: 100%;
-	width: 100%;
-	margin: 2rem auto 0 auto;
+	float: left;
+	text-align: center;
 	display: -webkit-box;      /* OLD - iOS 6-, Safari 3.1-6 */
 	display: -moz-box;         /* OLD - Firefox 19- (buggy but mostly works) */
 	display: -ms-flexbox;      /* TWEENER - IE 10 */
 	display: -webkit-flex;     /* NEW - Chrome */
 	display: flex;
-	flex-flow: row wrap;
-	-webkit-flex-flow: row wrap;
-
-	justify-content: center;	
+	flex-flow: column;
+	justify-content: flex-start;	
 	
 
 	box-sizing: border-box;
-	padding: 10em
+	padding: 2rem
+}
+
+
+.canvas-container{
+	box-sizing: border-box;
+	padding: 2rem 0 0 0;
 }
 
 h2{
@@ -56,9 +69,8 @@ header {
 	background:#FFFFFF;
 	overflow:auto;
 	box-shadow:0px 3px 5px rgba(0,0,0,0.5);
-	position:relative;
+	position:absolute;
 	padding:0px 25px;
-	position:fixed;
 	top:0;
 	width:100%;
 }
