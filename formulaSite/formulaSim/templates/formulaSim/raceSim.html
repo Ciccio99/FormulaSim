@@ -75,7 +75,7 @@
    		var simulation_drivers = [];
    		var TOTAL_CIRCUIT_LAPS = 0;
    		var retiredDriverCount = 0;
-
+   		var LAP_ANGLE = 0;
 
    		//Function to convert degrees to radians for when circles/arcs need to be drawn
    		//More of a convenience tool
@@ -106,7 +106,7 @@
 			this.radiusPos = radiusPos;
 			this.posAngle = -90;
 			this.circumSpeed = 0;
-			this.lapAngle = 360 / this.totalLapCount;
+			
 			this.driverCircum = (2 * Math.PI * this.radiusPos);
 			
 
@@ -127,6 +127,7 @@
 				this.check_retired();
 				//If the driver has not yet retired from the race
 				if(!this.retired){
+
 					/*
 					if(this.curLap == 1){
 						this.curSpeed = (this.lapLength / this.laptimes[0].milliseconds) * 1000;
@@ -136,10 +137,13 @@
 					if(this.curLap == 1){
 						this.updateSpeed();
 					}
-					this.posAngle += (this.circumSpeed / this.driverCircum * 360) * 1000;
-
+					this.posAngle += (this.circumSpeed / this.driverCircum * 360) * 10000;
 					this.checkLapped();
 				}
+				
+					
+				
+
 				//else do nothing, they're retired, silly!
 
 			};
@@ -153,11 +157,17 @@
 					this.updateSpeed();
 				}
 				*/
-				if(this.posAngle >= this.lapAngle * this.curLap){
+				if(this.driverid == 3)
+						console.log('LEWIS LAP COUNT:' + LAP_ANGLE);
+				if(this.posAngle >= (LAP_ANGLE * this.curLap) - 90 && !this.retired){
 					this.curLap += 1;
 					this.check_retired();
 					this.updateSpeed();
+					
 				}
+
+
+					
 			};
 
 			this.drawRacer = function(){
@@ -174,10 +184,13 @@
 					ctx.beginPath();
 					ctx.arc(WIDTH / 2, HEIGHT / 2, this.radiusPos, degToRad(-90), degToRad(this.posAngle), false);
 					ctx.lineWidth = CAR_WIDTH;
-					ctx.strokeStyle = 'white';
+					if(retiredDriverCount >= simulation_drivers.length - 1){
+						ctx.strokeStyle = 'red';
+					}
+					else
+						ctx.strokeStyle = 'white';
 					ctx.stroke();
 					ctx.closePath();
-					console.log('Curr  Lap: ' + this.curLap);					
 				}
 				else{
 					/*
@@ -194,6 +207,8 @@
 				if(this.curLap > this.totalLapCount && this.retired == false){
 					this.retired = true;
 					retiredDriverCount += 1;
+
+					console.log("Retired drivers: " + retiredDriverCount + " number of drivers: " + simulation_drivers.length + " cur lap: " + this.curLap + " totLaps: " + this.totalLapCount + " driverid: " + this.driverid);					
 				}
 			};
 		};
@@ -229,6 +244,7 @@
 						//because the track model doesn't hold this information for some reason
 						if(TOTAL_CIRCUIT_LAPS == 0)
 							TOTAL_CIRCUIT_LAPS = driver.totalLapCount;
+							LAP_ANGLE = 360 / TOTAL_CIRCUIT_LAPS;
 					}
 					return json_status[i].fields.status_name;
 				}
@@ -268,7 +284,7 @@
    		var raceInterval = setInterval(function(){ draw() }, 1);
 
    		function drawCircleTrack(){
-   			ctx.fillStyle = "#292929";
+   			ctx.fillStyle = "rgba(0, 0, 0, .7)";
 
 			ctx.beginPath();
 			ctx.arc(WIDTH / 2, HEIGHT / 2, TRACK_RADIUS, 0, 2 * Math.PI, false);
@@ -295,6 +311,8 @@
 			}
 
 			if(isRaceFinished()){
+				console.log("FINISHED");
+				draw();
 				clearInterval(raceInterval);
 			}
 			
