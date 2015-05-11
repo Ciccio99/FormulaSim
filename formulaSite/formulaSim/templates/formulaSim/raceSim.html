@@ -11,16 +11,17 @@
 	<h3> The RaceSim </h3>
 	
 
-	<form class='get-race-form' method='POST' action="{% url 'formulaSim.views.raceSim' %}" enctype="multipart/form-data">
-		{% csrf_token %}
-		<span>{{ errorMessage }}</span>
-		<ul>
-			{{the_form.as_ul}}
-		</ul>
-		<button type="submit" name="submit" value="Get Race">Get Race</button>
-	</form>
+	
 	<div class='main-content-container'>
 		<div class='race-info-container'>
+			<form class='get-race-form' method='POST' action="{% url 'formulaSim.views.raceSim' %}" enctype="multipart/form-data">
+				{% csrf_token %}
+				<span>{{ errorMessage }}</span>
+				<ul>
+					{{the_form.as_ul}}
+				</ul>
+				<button type="submit" name="submit" value="Get Race">Get Race</button>
+			</form>
 		{% if race %}
 			
 			<div class='race-title-container'>
@@ -33,7 +34,7 @@
 		{% if drivers %}
 			
 			{{drivers_id}}
-			<ul>
+			<ul class='drivers-list'>
 				{% for driver in drivers %}
 					<li><h4>{{ driver.forename }} {{ driver.surname }} {{ driver.driverid }}</h4></li>
 					{% comment %}
@@ -49,7 +50,7 @@
 		{% endif %}
 	</div>
 	<div class='canvas-container'>
-		<canvas id="c" width="610" height="610" style="border:1px solid #c3c3c3;">
+		<canvas id="c" width="550" height="550">
 			Your browser does not support the HTML5 canvas tag.
 		</canvas>
 	</div>
@@ -65,8 +66,8 @@
 		// Creating lists of the necessary models drivers, laps, etc
 		var WIDTH = c.width;
 		var HEIGHT = c.height;
-		var TRACK_RADIUS = (WIDTH - 10) / 2;
-		var CAR_WIDTH = 6;
+		var TRACK_RADIUS = (WIDTH - 35) / 2;
+		var CAR_WIDTH = 9;
    		var json_drivers = {{ serialized_drivers|safe }};
    		var json_laptimes = {{ serialized_laptimes|safe }};
    		var json_results = {{ serialized_results|safe }};
@@ -107,6 +108,9 @@
 			this.posAngle = -90;
 			this.circumSpeed = 0;
 			this.driverCircum = (2 * Math.PI * this.radiusPos);
+
+			// color variable for driver
+			this.driverColor = 'rgb(0, 0, 0)';
 			
 
 			this.updateSpeed = function(){
@@ -131,13 +135,10 @@
 					if(this.curLap == 1){
 						this.updateSpeed();
 					}
-					this.posAngle += (this.circumSpeed / this.driverCircum * 360) * 1000;
+					this.posAngle += (this.circumSpeed / this.driverCircum * 360) * 10000;
 					this.checkLapped();
-				}
-				
-					
-				
 
+				}
 				//else do nothing, they're retired, silly!
 
 			};
@@ -148,30 +149,32 @@
 				if(this.posAngle >= (LAP_ANGLE * this.curLap) - 90 && !this.retired){
 					this.curLap += 1;
 					this.check_retired();
-					this.updateSpeed();
-					
-				}
+					this.updateSpeed();	
 
-
-					
+				}	
 			};
 
 			this.drawRacer = function(){
 				if(!this.retired){
-					
 
 					ctx.beginPath();
 					ctx.arc(WIDTH / 2, HEIGHT / 2, this.radiusPos, degToRad(-90), degToRad(this.posAngle), false);
 					ctx.lineWidth = CAR_WIDTH;
-					ctx.strokeStyle = 'white';
+					ctx.strokeStyle = this.driverColor;
+					//ctx.strokeStyle = 'teal';
 					ctx.stroke();
 					ctx.closePath();
 				}
 				else{
+
 					ctx.beginPath();
-					ctx.arc(WIDTH / 2, HEIGHT / 2, this.radiusPos, degToRad(-90), degToRad(this.posAngle), false);
+					if(this.totalLapCount == 0)
+						ctx.arc(WIDTH / 2, HEIGHT / 2, this.radiusPos, degToRad(-90), degToRad(-88), false);
+					else
+						ctx.arc(WIDTH / 2, HEIGHT / 2, this.radiusPos, degToRad(-90), degToRad(this.posAngle), false);
 					ctx.lineWidth = CAR_WIDTH;
-					ctx.strokeStyle = 'red';
+					//ctx.strokeStyle = this.driverColor;
+					ctx.strokeStyle = 'teal';
 					ctx.stroke();
 					ctx.closePath();
 				}
@@ -180,7 +183,7 @@
 			this.check_retired = function(){
 				if(this.curLap > this.totalLapCount && this.retired == false){
 					this.retired = true;
-					retiredDriverCount += 1;					
+					retiredDriverCount += 1;				
 				}
 			};
 		};
@@ -214,9 +217,12 @@
 					if(json_status[i].pk == 1){
 						//Taking advantage of access to the driver status to get the total lap count at a circuit
 						//because the track model doesn't hold this information for some reason
-						if(TOTAL_CIRCUIT_LAPS == 0)
+						if(TOTAL_CIRCUIT_LAPS == 0){
 							TOTAL_CIRCUIT_LAPS = driver.totalLapCount;
 							LAP_ANGLE = 360 / TOTAL_CIRCUIT_LAPS;
+							   			console.log(LAP_ANGLE);
+
+						}
 					}
 					return json_status[i].fields.status_name;
 				}
@@ -224,20 +230,28 @@
 			return null;
 		}
 
+		function set_driver_color(){
+			var r = Math.floor(Math.random() * 256);
+			var g = Math.floor(Math.random() * 256);
+			var b = Math.floor(Math.random() * 256);
+			return 'rgb(' + r + ', ' + g + ', ' + b + ')';
+		}
+
 		// Creates all the driver  objects based on the json file given at the start
 		function create_drivers(){
 			for(var i = 0; i < json_drivers.length; i++){
 				var driverFields = json_drivers[i].fields;
-				var newDriver = new FormulaDriver(driverFields.surname, json_drivers[i].pk, get_driver_results(json_drivers[i].pk), get_laptimes(json_drivers[i].pk), TRACK_RADIUS - ( (CAR_WIDTH + 3) * (i + 1)));
+				var newDriver = new FormulaDriver(driverFields.surname, json_drivers[i].pk, get_driver_results(json_drivers[i].pk), get_laptimes(json_drivers[i].pk), (TRACK_RADIUS * 0.98) - ((CAR_WIDTH + 2)*(i + 1)));
 				newDriver.curStatus = get_final_status( newDriver );
 				newDriver.lapLength = set_lap_length();
+				newDriver.driverColor = set_driver_color();
 				simulation_drivers.push( newDriver );
 			}
 		}
 
 		
 		
-
+		//Creates drivers for simulation
 		create_drivers();
 
 		// Checks if all drivers have retired/finished
@@ -255,18 +269,31 @@
    		var raceInterval = setInterval(function(){ draw() }, 1);
 
    		function drawCircleTrack(){
-   			ctx.fillStyle = "rgba(0, 0, 0, .7)";
+   			ctx.fillStyle = "rgba(82, 82, 82, .1)";
 
 			ctx.beginPath();
 			ctx.arc(WIDTH / 2, HEIGHT / 2, TRACK_RADIUS, 0, 2 * Math.PI, false);
 			ctx.fill();
-
-			/*
-			ctx.lineWidth = 15;
-			ctx.strokeStyle = 'black';
-			ctx.stroke();
-			*/
 			ctx.closePath();
+   		}
+
+   		function drawLapLines(){
+   			for(var i = 0; i < TOTAL_CIRCUIT_LAPS; i++){
+	   			var x = WIDTH/2 + (TRACK_RADIUS + 10) * Math.cos(degToRad(-90 + (LAP_ANGLE * i)));
+				var y = HEIGHT/2 + (TRACK_RADIUS + 10) * Math.sin(degToRad(-90 + (LAP_ANGLE * i)));
+				ctx.beginPath();              
+				ctx.lineWidth = 1;
+				ctx.strokeStyle = "#363443";  
+				ctx.moveTo(WIDTH / 2, HEIGHT / 2);
+				ctx.lineTo(x, y);
+				ctx.stroke();  
+				
+				ctx.fillStyle = '#FAFAFA';
+				ctx.textAlign = 'center';
+				ctx.font = ' 12px Helvetica';
+				ctx.fillText(i + 1, x, y);
+				ctx.closePath();
+			}
    		}
 
    		function draw(){
@@ -274,6 +301,7 @@
 			ctx.clearRect(0,0, WIDTH, HEIGHT);
 
 			drawCircleTrack();
+			drawLapLines();
 
 			//Move cars and draw them
 			for(var i = 0; i < simulation_drivers.length; i++){
