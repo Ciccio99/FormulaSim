@@ -24,13 +24,13 @@ body {
 	color: #fafafa;
 	font: normal 500 2rem Helvetica, Arial, sans-serif;
 	box-sizing: border-box;
-	padding:  0 2rem 2rem 2rem;
+	padding:  4rem;
 	text-align: center;
 }
 
 .race-info-container{
 	color: #fafafa;
-	font: normal 300 1.8rem Helvetica, Arial, sans-serif;
+	font: normal 300 1.5rem Helvetica, Arial, sans-serif;
 	float: left;
 	text-align: center;
 	display: -webkit-box;      /* OLD - iOS 6-, Safari 3.1-6 */
@@ -51,6 +51,6 @@ body {
 
 .canvas-container{
 	box-sizing: border-box;
-	padding: 2rem 0 0 0;
+	padding: 2rem;
 }
 

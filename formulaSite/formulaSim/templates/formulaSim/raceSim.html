@@ -50,7 +50,7 @@
 		{% endif %}
 	</div>
 	<div class='canvas-container'>
-		<canvas id="c" width="550" height="550">
+		<canvas id="c" width="670" height="670">
 			Your browser does not support the HTML5 canvas tag.
 		</canvas>
 	</div>
@@ -62,12 +62,18 @@
 		var c = document.getElementById("c");
 		var ctx = c.getContext("2d");
 
+		// List of color variables for racers to choose from
+		var driverColorSpec = ['#F8C677', '#FF8943', '#F34A35', '#E91229', '#2D6F70', '#F9E671', '#FFAC43', '#F36B76', 
+		'#FF005C', '#2DA570', '#FEBE18', '#FF6B00', '#F35260', '#FC000F', '#2DD070', '#7F89AE', '#F3427F', '#00A9B5', 
+		'#FF6600', '#B81C46', '#FFA300', '#5F7BB7', '#7512A7', '#2DD692', '#D93445'
+		];
+
 		// Grabbing the WIDTH and HEIGHT from the canvas DOM
 		// Creating lists of the necessary models drivers, laps, etc
 		var WIDTH = c.width;
 		var HEIGHT = c.height;
 		var TRACK_RADIUS = (WIDTH - 35) / 2;
-		var CAR_WIDTH = 9;
+		var CAR_WIDTH = 10;
    		var json_drivers = {{ serialized_drivers|safe }};
    		var json_laptimes = {{ serialized_laptimes|safe }};
    		var json_results = {{ serialized_results|safe }};
@@ -135,7 +141,7 @@
 					if(this.curLap == 1){
 						this.updateSpeed();
 					}
-					this.posAngle += (this.circumSpeed / this.driverCircum * 360) * 10000;
+					this.posAngle += (this.circumSpeed / this.driverCircum * 360) * 1000;
 					this.checkLapped();
 
 				}
@@ -174,7 +180,7 @@
 						ctx.arc(WIDTH / 2, HEIGHT / 2, this.radiusPos, degToRad(-90), degToRad(this.posAngle), false);
 					ctx.lineWidth = CAR_WIDTH;
 					//ctx.strokeStyle = this.driverColor;
-					ctx.strokeStyle = 'teal';
+					ctx.strokeStyle = this.driverColor;
 					ctx.stroke();
 					ctx.closePath();
 				}
@@ -231,9 +237,10 @@
 		}
 
 		function set_driver_color(){
-			var r = Math.floor(Math.random() * 256);
-			var g = Math.floor(Math.random() * 256);
-			var b = Math.floor(Math.random() * 256);
+			var r = Math.floor(Math.random() * (250 - 125) + 125);
+			var g = Math.floor(Math.random() * (125));
+			//var b = Math.floor(Math.random() * 256);
+			var b = Math.floor(Math.random() * (255));
 			return 'rgb(' + r + ', ' + g + ', ' + b + ')';
 		}
 
@@ -241,7 +248,7 @@
 		function create_drivers(){
 			for(var i = 0; i < json_drivers.length; i++){
 				var driverFields = json_drivers[i].fields;
-				var newDriver = new FormulaDriver(driverFields.surname, json_drivers[i].pk, get_driver_results(json_drivers[i].pk), get_laptimes(json_drivers[i].pk), (TRACK_RADIUS * 0.98) - ((CAR_WIDTH + 2)*(i + 1)));
+				var newDriver = new FormulaDriver(driverFields.surname, json_drivers[i].pk, get_driver_results(json_drivers[i].pk), get_laptimes(json_drivers[i].pk), (TRACK_RADIUS * 0.98) - ((CAR_WIDTH + 3)*(i + 1)));
 				newDriver.curStatus = get_final_status( newDriver );
 				newDriver.lapLength = set_lap_length();
 				newDriver.driverColor = set_driver_color();
@@ -249,8 +256,6 @@
 			}
 		}
 
-		
-		
 		//Creates drivers for simulation
 		create_drivers();
 
@@ -291,7 +296,7 @@
 				ctx.fillStyle = '#FAFAFA';
 				ctx.textAlign = 'center';
 				ctx.font = ' 12px Helvetica';
-				ctx.fillText(i + 1, x, y);
+				ctx.fillText(i + 1, x, y + 5);
 				ctx.closePath();
 			}
    		}
