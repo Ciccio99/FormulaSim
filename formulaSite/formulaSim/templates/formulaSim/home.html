@@ -8,8 +8,21 @@
 		{% endblock extraLinksBlock %}
 	</head>
 
-
+	
 	<body>
+		<header>
+			<div class='site-title-container'>
+				<h1 class='header-title'>FormulaSim</h1>
+			</div>
+			<nav>
+				<ul class='nav-menu-list'>
+					<li><a class='menu-list-button' href="/">Home</a></li>
+					<li><a class='menu-list-button' href="#">About</a></li>
+					<li><a class='menu-list-button' href="/simulations">Simulations</a></li>
+					<li><a class='menu-list-button' href="drivers">Drivers</a></li>
+				</ul>
+			</nav>
+		</header>
 		<h2> Welcome to FormulaSim </h2>
 
 		{% block mainContentBlock %}
