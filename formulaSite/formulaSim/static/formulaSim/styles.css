@@ -7,7 +7,12 @@ html {
 	width: 100%;
 	font-size: 60%;
 	font-family: "Helvetica Neu", Helvetica, Arial, sans-serif;
-	background: #131313;
+	background: url("images/f1_ferrari_bg.jpg") no-repeat center center fixed; 
+	-webkit-background-size: cover;
+	-moz-background-size: cover;
+	-o-background-size: cover;
+	background-size: cover;
+
 
 }
 
@@ -17,8 +22,14 @@ h1{
 
 }
 
+h4{
+	font: normal 300 2rem Helvetica, Arial, sans-serif;
+	color: #FAFAFA;
+}
+
 header{
 	width: 100%;
+	
 }
 
 
@@ -35,6 +46,10 @@ header{
 	transform: scaleY(1.1);
 }
 
+header nav{
+	margin-bottom: 3rem;
+}
+
 .nav-menu-list{
 	font: normal 500 1.6rem Helvetica, Arial, sans-serif;
 	color: #FAFAFA;
@@ -47,36 +62,106 @@ header{
 }
 
 .menu-list-button{
+	color: #FAFAFA;
 	display: inline-block;
 	box-sizing: border-box;
 	padding: 1rem 2rem 1rem 2rem;
-	background-color: white;
+}
 
+.menu-list-button:hover{
+	color: #e6e6e6;
 }
 
 
 body {
-	height: 100%;
 	width: 100%;
+	background-color: rgba(10, 10, 10, .8);
+}
+
+.race-form-container{
+	width: 100%;
+	display: flex;
+	justify-content: center;
+	box-sizing: border-box;
+	padding: 1rem 2rem 2rem 2rem;
+}
+
+.race-form-container h4{
+	box-sizing: border-box;
+	padding: 1rem;
+}
+
+.get-race-form{
+	width: 25rem;
+}
+
+.get-race-form ul{
+	display: flex;
+	justify-content: space-around;
+}
+
+.sim-form-items{
+	display: inline-block;
+}
+
+.race-form-input{
+	font: normal 500 1.4rem Helvetica, Arial, sans-serif;
+	background-color: #FAFAFA;
+	outline: none 0;
+	border: none;
+	border-radius: 2px;
+	box-sizing: border-box;
+	padding: 1rem;
+}
+.race-form-input:focus{
+	box-shadow: 0 0 8px rgba(255, 255, 255, 1);
+}
+
+.view-race-btn{
+	font: normal 300 1.4rem Helvetica, Arial, sans-serif;
+	background-color: #FAFAFA;
+	outline: none 0;
+	border: none;
+	border-radius: 2px;
+	box-sizing: border-box;
+	padding: 1rem;
+	cursor: pointer;
+}
+
+.view-race-btn:hover{
+	background-color: #e6e6e6;
+
 }
 
 .main-content-container{
 	display: flex;
-	justify-content: space-between;
+	justify-content: space-around;
 }
+
+
 
 .race-title-container{
 	color: #fafafa;
 	font: normal 500 2rem Helvetica, Arial, sans-serif;
 	box-sizing: border-box;
-	padding:  4rem;
+	padding:  2rem;
 	text-align: center;
 }
+
+.slider-holder{
+	box-sizing: border-box;
+	padding: 1rem;
+}
+.slider-holder label{
+	display: block;
+}
+
+
 
 .race-info-container{
 	color: #fafafa;
 	font: normal 300 1.5rem Helvetica, Arial, sans-serif;
-	float: left;
+	width: 28rem;
 	text-align: center;
 	display: -webkit-box;      /* OLD - iOS 6-, Safari 3.1-6 */
 	display: -moz-box;         /* OLD - Firefox 19- (buggy but mostly works) */
@@ -91,6 +176,22 @@ body {
 
 .drivers-list{
 	color: #fafafa;
+}
+
+.drivers-list li{
+	box-sizing: border-box;
+	padding: 0.5rem;
+}
+
+.drivers-list h4{
+	font: normal 300 1.4rem Helvetica, Arial, sans-serif;
+	display: inline-block;
+}
+
+.driver_colors{
+	height: 20px;
+	width: 20px;
+	display: inline-block;
 }
 
 

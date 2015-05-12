@@ -72,6 +72,8 @@ def raceSim(request):
 				serialized_status = serializers.serialize("json", Status.objects.all())
 				dictionary.update({'serialized_status' : serialized_status})
 
+				dictionary.update({'begin_simulation' : True})
+
 				return render(request, 'formulaSim/raceSim.html', dictionary)
 			else:
 				errorMessage = "No race exists with the given parameters!"
@@ -79,6 +81,7 @@ def raceSim(request):
 			errorMessage = "All Fields Must be filled out!"
 	#If request is not a POST
 	dictionary.update({'errorMessage' : errorMessage})
+	dictionary.update({'begin_simulation' : False})
 	return render(request, 'formulaSim/raceSim.html', dictionary)
 
 """
