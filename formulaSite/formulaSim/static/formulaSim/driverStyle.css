@@ -17,8 +17,9 @@
 	overflow: scroll;
 
 	box-sizing: border-box;
-	padding: 10em
+	padding: 5em 10rem 5rem 10rem;
 }
+
 .Patients-Container a{
 	height: 25rem;
 	margin-bottom: 2rem;

@@ -109,16 +109,19 @@ body {
 	background-color: #FAFAFA;
 	outline: none 0;
 	border: none;
+	webkit-border-radius: 2px;
 	border-radius: 2px;
 	box-sizing: border-box;
 	padding: 1rem;
+	width: 7rem;
+	height: 4rem;
 }
 .race-form-input:focus{
 	box-shadow: 0 0 8px rgba(255, 255, 255, 1);
 }
 
 .view-race-btn{
-	font: normal 300 1.4rem Helvetica, Arial, sans-serif;
+	font: normal 500 1.4rem Helvetica, Arial, sans-serif;
 	background-color: #FAFAFA;
 	outline: none 0;
 	border: none;
@@ -126,6 +129,8 @@ body {
 	box-sizing: border-box;
 	padding: 1rem;
 	cursor: pointer;
+	width: 10rem;
+	height: 4rem;
 }
 
 .view-race-btn:hover{
@@ -149,8 +154,13 @@ body {
 }
 
 .slider-holder{
+	color: #fafafa;
+	font: normal 500 2rem Helvetica, Arial, sans-serif;
 	box-sizing: border-box;
-	padding: 1rem;
+	padding: 2rem;
+	margin: 0 auto 0 auto;
+	width: 24rem;
+	text-align: center;
 }
 .slider-holder label{
 	display: block;
@@ -162,7 +172,6 @@ body {
 	color: #fafafa;
 	font: normal 300 1.5rem Helvetica, Arial, sans-serif;
 	width: 28rem;
-	text-align: center;
 	display: -webkit-box;      /* OLD - iOS 6-, Safari 3.1-6 */
 	display: -moz-box;         /* OLD - Firefox 19- (buggy but mostly works) */
 	display: -ms-flexbox;      /* TWEENER - IE 10 */
@@ -181,17 +190,29 @@ body {
 .drivers-list li{
 	box-sizing: border-box;
 	padding: 0.5rem;
+	height: 4.6rem;
 }
 
 .drivers-list h4{
 	font: normal 300 1.4rem Helvetica, Arial, sans-serif;
 	display: inline-block;
+	box-sizing: border-box;
+	padding: 0 0 0 .5rem;
+
 }
 
-.driver_colors{
-	height: 20px;
+.driver-colors{
+	height: 100%;
 	width: 20px;
 	display: inline-block;
+	float: left;
+}
+
+.driver-status{
+	font: normal 500 1.4rem Helvetica, Arial, sans-serif;
+	width: 14rem;
+	display: inline-block;
+	text-align: right;
 }
 
 

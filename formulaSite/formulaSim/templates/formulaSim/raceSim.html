@@ -32,6 +32,25 @@
 				</div>
 			
 			{% endif %}
+			
+
+			{% if drivers %}
+				{{drivers_id}}
+				<ul class='drivers-list' id='Drivers_List'>
+					{% for driver in drivers %}
+						<li>
+							<span id='Driver_Color_Legend' class='driver-colors'></span>
+							<h4>{{ driver.forename }} {{ driver.surname }}</h4>
+							<br>
+							<span id='Driver_Status_Legend' class='driver-status'></span>
+						</li>
+					{% endfor %}
+				</ul>
+			{% endif %}
+		</div>
+
+		<div class='canvas-container'>
+
 			{% if begin_simulation %}
 				<div class='slider-holder'>
 					<label for=fader>Simulation Speed</label>
@@ -47,28 +66,6 @@
 				</div>	
 			{% endif %}
 
-			{% if drivers %}
-				{{drivers_id}}
-				<ul class='drivers-list' id='Drivers_List'>
-					{% for driver in drivers %}
-						<li>
-							<h4>{{ driver.forename }} {{ driver.surname }}</h4>
-							<span id='Driver_Color_Legend' class='driver_colors'></span>
-						</li>
-						{% comment %}
-						<ul>
-							{% for lap in race.raceid|get_laptime_list:driver.driverid %}
-								<li > Lap {{ lap.lap }} time: {{ lap.time }}</li>
-							{% endfor %}
-
-						</ul>
-						{% endcomment %}
-					{% endfor %}
-				</ul>
-			{% endif %}
-		</div>
-
-		<div class='canvas-container'>
 			<canvas id="c" width="740" height="740">
 				Your browser does not support the HTML5 canvas.
 			</canvas>
@@ -82,9 +79,10 @@
 			var ctx = c.getContext("2d");
 
 			// List of color variables for racers to choose from
-			var driverColorSpectrum = ['#F8C677', '#FF8943', '#F34A35', '#E91229', '#2D6F70', '#F9E671', '#FFAC43', '#F36B76', 
-			'#FF005C', '#2DA570', '#FEBE18', '#FF6B00', '#F35260', '#FC000F', '#2DD070', '#7F89AE', '#F3427F', '#00A9B5', 
-			'#FF6600', '#B81C46', '#FFA300', '#5F7BB7', '#7512A7', '#2DD692', '#D93445'
+			var driverColorSpectrum = ['#F8C677', '#5F7BB7', '#F34A35', '#E91229', '#2DD692', '#F9E671', '#FFAC43', 
+			'#F36B76', 
+			'#FF005C', '#2DA570', '#FEBE18', '#FF6B00', '#F35260', '#FC000F', '#2DD070', '#7F89AE', '#F3427F', '#FF8943', 
+			'#FF6600', '#B81C46', '#FFA300', '#00A9B5', '#7512A7', '#2D6F70', '#D93445'
 			];
 
 			// Grabbing the WIDTH and HEIGHT from the canvas DOM
@@ -137,6 +135,7 @@
 
 				// color variable for driver
 				this.driverColor = 'rgb(0, 0, 0)';
+				this.driverStatsSpan = null;
 				
 
 				this.updateSpeed = function(){
@@ -215,7 +214,7 @@
 
 						ctx.beginPath();
 						if(this.totalLapCount == 0)
-							ctx.arc(WIDTH / 2, HEIGHT / 2, this.radiusPos, degToRad(-90), degToRad(-88), false);
+							ctx.arc(WIDTH / 2, HEIGHT / 2, this.radiusPos, degToRad(-90), degToRad(-87), false);
 						else
 							ctx.arc(WIDTH / 2, HEIGHT / 2, this.radiusPos, degToRad(-90), degToRad(this.posAngle), false);
 						ctx.lineWidth = CAR_WIDTH;
@@ -231,6 +230,7 @@
 					if(this.curLap > this.totalLapCount && this.retired == false){
 						this.retired = true;
 						retiredDriverCount += 1;
+						this.driverStatsSpan.innerHTML = this.curStatus + " Pos: " + this.results.fields.positiontext;
 					}
 				};
 			};
@@ -293,13 +293,13 @@
 					newDriver.driverColor = driverColorSpectrum[i];
 					document.getElementById('Drivers_List').querySelector('#Driver_Color_Legend').id = newDriver.codeName;
 					document.getElementById(newDriver.codeName).style.background = newDriver.driverColor;
+					document.getElementById('Drivers_List').querySelector('#Driver_Status_Legend').id = newDriver.codeName + "_Status";
+					newDriver.driverStatsSpan = document.getElementById(newDriver.codeName + "_Status");
 					simulation_drivers.push( newDriver );
 				}
 			}
 
-			//Creates drivers for simulation
-			create_drivers();
-
+			
 			// Checks if all drivers have retired/finished
 			// if finished, return true
 			// else return false
@@ -312,7 +312,7 @@
 				}
 			}
 
-	   		var raceInterval = setInterval(function(){ draw() }, 1);
+	   		
 
 	   		function drawCircleTrack(){
 	   			ctx.fillStyle = "rgba(82, 82, 82, .1)";
@@ -342,6 +342,11 @@
 				}
 	   		}
 
+
+	   		// Var to hold animation ID so that it can be cancelled when simulation
+	   		// is complete or paused
+	   		var animationID;
+	   		var raceInterval = null;
 	   		function draw(){
 				// Clears the canvas so that old stuff doesn't remain
 				ctx.clearRect(0,0, WIDTH, HEIGHT);
@@ -351,19 +356,34 @@
 
 				//Move cars and draw them
 				for(var i = 0; i < simulation_drivers.length; i++){
-					simulation_drivers[i].move();
+					//simulation_drivers[i].move();
 					simulation_drivers[i].drawRacer();	
 				}
-
-				/*
+				animationID = requestAnimationFrame(draw);
 				if(isRaceFinished()){
-					console.log("FINISHED");
-					draw();
+					window.cancelAnimationFrame(animationID);
 					clearInterval(raceInterval);
 				}
-				*/
 				
 			}
+
+			function simulate(){
+				for(var i = 0; i < simulation_drivers.length; i++){
+					simulation_drivers[i].move();
+					//simulation_drivers[i].drawRacer();	
+				}
+			}
+
+			
+			window.onload = function(){
+				//Creates drivers for simulation
+				create_drivers();
+
+				window.requestAnimationFrame(draw);
+				raceInterval = setInterval(function(){simulate();}, 1);
+				
+			}
+
 		</script>
 	{% endif %}
 
