@@ -71,6 +71,8 @@ def raceSim(request):
 				dictionary.update({'serialized_results' : serialized_results})
 				serialized_status = serializers.serialize("json", Status.objects.all())
 				dictionary.update({'serialized_status' : serialized_status})
+				serialized_pitstops = serializers.serialize("json", Pitstop.objects.filter(raceid = zeRace.raceid))
+				dictionary.update({'serialized_pitstops' : serialized_pitstops})
 
 				dictionary.update({'begin_simulation' : True})
 

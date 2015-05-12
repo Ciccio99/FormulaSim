@@ -79,10 +79,10 @@
 			var ctx = c.getContext("2d");
 
 			// List of color variables for racers to choose from
-			var driverColorSpectrum = ['#F8C677', '#5F7BB7', '#F34A35', '#E91229', '#2DD692', '#F9E671', '#FFAC43', 
+			var driverColorSpectrum = ['#F8C677', '#5F7BB7', '#F34A35', '#B81C46', '#2DD692', '#F9E671', '#FFAC43', 
 			'#F36B76', 
 			'#FF005C', '#2DA570', '#FEBE18', '#FF6B00', '#F35260', '#FC000F', '#2DD070', '#7F89AE', '#F3427F', '#FF8943', 
-			'#FF6600', '#B81C46', '#FFA300', '#00A9B5', '#7512A7', '#2D6F70', '#D93445'
+			'#FF6600', '#E91229', '#FFA300', '#00A9B5', '#7512A7', '#2D6F70', '#D93445'
 			];
 
 			// Grabbing the WIDTH and HEIGHT from the canvas DOM
@@ -95,7 +95,7 @@
 	   		var json_laptimes = {{ serialized_laptimes|safe }};
 	   		var json_results = {{ serialized_results|safe }};
 	   		var json_status = {{ serialized_status|safe }};
-
+	   		var json_pitstops = {{ serialized_pitstops|safe }};
 	   		var simulation_drivers = [];
 	   		var TOTAL_CIRCUIT_LAPS = 0;
 	   		var retiredDriverCount = 0;
@@ -109,14 +109,13 @@
 	   			return (Math.PI / 180 * deg);
 	   		}
 
-	   		
-
-
-	   		function FormulaDriver(lastname, codeName, driverid, result, laptimes, radiusPos){
+	   	
+	   		function FormulaDriver(lastname, codeName, driverid, result, laptimes, pitstops, radiusPos){
 				this.lastname = lastname;
 				this.codeName = codeName
 				this.driverid = driverid;
 				this.results = result;
+				this.pitstops = pitstops;
 				this.curStatus = null;
 				this.laptimes = laptimes;
 				this.lapLength = 0;
@@ -136,7 +135,7 @@
 				// color variable for driver
 				this.driverColor = 'rgb(0, 0, 0)';
 				this.driverStatsSpan = null;
-				
+				this.pitstop_laps_draw = [];
 
 				this.updateSpeed = function(){
 					// speed is based off of the laptime of the current lap
@@ -169,10 +168,40 @@
 
 				};
 
+				this.drawPitstops = function(){
+					for(var i = 0; i < this.pitstop_laps_draw.length; i++){
+						lap = this.pitstop_laps_draw[i];
+						var x = WIDTH/2 + (this.radiusPos) * Math.cos( degToRad(( -90 + (lap * LAP_ANGLE - (LAP_ANGLE / 2)) )) );
+						var y = HEIGHT/2 + (this.radiusPos) * Math.sin(degToRad(( -90 + (lap * LAP_ANGLE - (LAP_ANGLE / 2)) )));
+
+						ctx.beginPath();
+						ctx.fillStyle = this.driverColor;
+						ctx.arc(x, y, (CAR_WIDTH / 2) + 1, 0, 2 * Math.PI, false);
+						ctx.fill();
+						ctx.lineWidth = 0.5;
+					    ctx.strokeStyle = 'black';
+					    ctx.stroke();
+						ctx.fillStyle = '#FAFAFA';
+						ctx.textAlign = 'center';
+						ctx.font = ' 8px Helvetica';
+						ctx.fillText('P', x, y + 3);
+						ctx.closePath();
+					}
+				};
+
+				this.checkPitted = function(){
+					for(var i = 0; i < this.pitstops.length; i++){
+						if(pitstops[i].lap == (this.curLap - 1)){
+							this.pitstop_laps_draw.push(this.curLap - 1);
+						}
+					}
+				};
+
 				this.checkLapped = function(){
 					//If the racer reaches the end of the track/canvas, move them to the start of the canvas
 					
 					if(this.posAngle >= (LAP_ANGLE * this.curLap) - 90 && !this.retired){
+						this.checkPitted();
 						this.curLap += 1;
 						this.check_retired();
 						this.updateSpeed();	
@@ -180,23 +209,28 @@
 					}	
 				};
 
-				this.drawRacerName = function(){
+				this.drawRacerHead = function(){
 					var x = WIDTH/2 + (this.radiusPos) * Math.cos(degToRad((this.posAngle)));
 					var y = HEIGHT/2 + (this.radiusPos) * Math.sin(degToRad((this.posAngle)));
 					
 
 					ctx.beginPath();
-					ctx.fillStyle = "#E0E0DE";
+					ctx.fillStyle = "#FAFAFA";
 					ctx.arc(x, y, (CAR_WIDTH / 2) + 1, 0, 2 * Math.PI, false);
 					ctx.fill();
-					/*ctx.fillStyle = 'black';
-					ctx.textAlign = 'center';
-					ctx.font = ' 12px Helvetica';
-					ctx.fillText(this.codeName, x, y );*/
 					ctx.closePath();
-					
+				};
 
-				}
+				this.drawFinalPostion = function(){
+					var x = WIDTH/2 + (this.radiusPos) * Math.cos(degToRad((this.posAngle)));
+					var y = HEIGHT/2 + (this.radiusPos) * Math.sin(degToRad((this.posAngle)));
+					ctx.beginPath();
+					ctx.fillStyle = 'black';
+					ctx.textAlign = 'center';
+					ctx.font = ' 8px Helvetica';
+					ctx.fillText(this.results.fields.positiontext, x, y + 3);
+					ctx.closePath();
+				};
 
 				this.drawRacer = function(){
 					if(!this.retired){
@@ -205,14 +239,17 @@
 						ctx.arc(WIDTH / 2, HEIGHT / 2, this.radiusPos, degToRad(-90), degToRad(this.posAngle), false);
 						ctx.lineWidth = CAR_WIDTH;
 						ctx.strokeStyle = this.driverColor;
-						//ctx.strokeStyle = 'teal';
 						ctx.stroke();
 						ctx.closePath();
-						this.drawRacerName();
+						this.drawRacerHead();
+						this.drawPitstops();
+						
 					}
 					else{
 
 						ctx.beginPath();
+						// if the driver retires immediately, then display an arc that is halfway
+						// through the lap to better show the arc and its color
 						if(this.totalLapCount == 0)
 							ctx.arc(WIDTH / 2, HEIGHT / 2, this.radiusPos, degToRad(-90), degToRad(-87), false);
 						else
@@ -222,7 +259,10 @@
 						ctx.strokeStyle = this.driverColor;
 						ctx.stroke();
 						ctx.closePath();
-						this.drawRacerName();
+						this.drawRacerHead();
+						this.drawFinalPostion();
+						this.checkPitted();
+						this.drawPitstops();
 					}
 				};
 						
@@ -231,13 +271,14 @@
 						this.retired = true;
 						retiredDriverCount += 1;
 						this.driverStatsSpan.innerHTML = this.curStatus + " Pos: " + this.results.fields.positiontext;
+						console.log(this.pitstops);
 					}
 				};
 			};
 
 
 			function get_laptimes(driverid){
-				var laptimeslist = []
+				var laptimeslist = [];
 				for(var i = 0; i < json_laptimes.length; i++){
 					if(json_laptimes[i].fields.driverid == driverid)
 						laptimeslist.push(json_laptimes[i].fields);
@@ -254,9 +295,22 @@
 				return null;
 			}
 
+			function get_pitstops(driverid){
+				var pitstoplist = [];
+
+				for(var i = 0; i < json_pitstops.length; i++){
+					if(json_pitstops[i].fields.driverid == driverid){
+						pitstoplist.push(json_pitstops[i].fields);
+					}
+				}
+				console.log(pitstoplist);
+				return pitstoplist;
+			}
+
 			function set_lap_length(){
 				return (WIDTH / TOTAL_CIRCUIT_LAPS);
 			}
+
 
 			function get_final_status(driver){
 				for(var i = 0; i < json_status.length; i++){
@@ -282,11 +336,12 @@
 				return 'rgb(' + r + ', ' + g + ', ' + b + ')';
 			}
 
+
 			// Creates all the driver  objects based on the json file given at the start
 			function create_drivers(){
 				for(var i = 0; i < json_drivers.length; i++){
 					var driverFields = json_drivers[i].fields;
-					var newDriver = new FormulaDriver(driverFields.surname, driverFields.code, json_drivers[i].pk, get_driver_results(json_drivers[i].pk), get_laptimes(json_drivers[i].pk), (TRACK_RADIUS * 0.98) - ((CAR_WIDTH + 3)*(i + 1)));
+					var newDriver = new FormulaDriver(driverFields.surname, driverFields.code, json_drivers[i].pk, get_driver_results(json_drivers[i].pk), get_laptimes(json_drivers[i].pk), get_pitstops(json_drivers[i].pk), (TRACK_RADIUS * 0.98) - ((CAR_WIDTH + 3)*(i + 1)));
 					newDriver.curStatus = get_final_status( newDriver );
 					newDriver.lapLength = set_lap_length();
 					//newDriver.driverColor = set_driver_color();
@@ -295,8 +350,12 @@
 					document.getElementById(newDriver.codeName).style.background = newDriver.driverColor;
 					document.getElementById('Drivers_List').querySelector('#Driver_Status_Legend').id = newDriver.codeName + "_Status";
 					newDriver.driverStatsSpan = document.getElementById(newDriver.codeName + "_Status");
+
+					//simulation_drivers[newDriver.results.fields.grid - 1] = newDriver;
 					simulation_drivers.push( newDriver );
+					
 				}
+				//simulation_drivers = orderOnGridPos(simulation_drivers);
 			}
 
 			

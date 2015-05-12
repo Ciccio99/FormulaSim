@@ -194,25 +194,26 @@ body {
 }
 
 .drivers-list h4{
-	font: normal 300 1.4rem Helvetica, Arial, sans-serif;
+	font: normal 700 1.4rem Helvetica, Arial, sans-serif;
 	display: inline-block;
 	box-sizing: border-box;
-	padding: 0 0 0 .5rem;
+	padding: 0 0 0 1rem;
 
 }
 
 .driver-colors{
 	height: 100%;
-	width: 20px;
+	width: 10px;
 	display: inline-block;
 	float: left;
 }
 
 .driver-status{
-	font: normal 500 1.4rem Helvetica, Arial, sans-serif;
-	width: 14rem;
+	font: normal 300 1.4rem Helvetica, Arial, sans-serif;
+	color: #C6C6C6;
 	display: inline-block;
-	text-align: right;
+	box-sizing: border-box;
+	padding: 0 0 0 1rem;
 }
 
 
