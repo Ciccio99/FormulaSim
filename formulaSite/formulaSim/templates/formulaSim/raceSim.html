@@ -9,14 +9,13 @@
 
 {% block mainContentBlock %}	
 	<div class='race-form-container'>
-		<h4>Select a race</h4>
 		<form class='get-race-form' method='POST' action="{% url 'formulaSim.views.raceSim' %}" enctype="multipart/form-data">
 			{% csrf_token %}
 			<span>{{ errorMessage }}</span>
 			<ul>
-				<li class='sim-form-items'>{{ the_form.year }}</li>
-				<li class='sim-form-items'>{{ the_form.round }}</li>
 				<li class='sim-form-items'><button class='view-race-btn' type="submit" name="submit" value="View Race">View Race</button></li>
+				<li class='sim-form-items'>{{ the_form.selectRace }}</li>
+				
 			</ul>
 		</form>
 	</div>
@@ -54,19 +53,13 @@
 			{% if begin_simulation %}
 				<div class='slider-holder'>
 					<label for=fader>Simulation Speed</label>
+					<span class='slider-labels'>Slow</span>
 					<input type=range min=1 max=10000 value=5000 id='sim-speed-slider' oninput="outputUpdate(value)">
-
-					<output for=fader id='speed'>5000</output>
-					<script >
-						function outputUpdate(speed) {
-							document.querySelector('#speed').value = speed;
-						}
-
-					</script>
+					<span class='slider-labels'>Fast</span>
 				</div>	
 			{% endif %}
 
-			<canvas id="c" width="740" height="740">
+			<canvas id="c" width="770" height="770">
 				Your browser does not support the HTML5 canvas.
 			</canvas>
 		</div>
@@ -110,7 +103,7 @@
 	   		}
 
 	   	
-	   		function FormulaDriver(lastname, codeName, driverid, result, laptimes, pitstops, radiusPos){
+	   		function FormulaDriver(lastname, codeName, driverid, result, laptimes, pitstops){
 				this.lastname = lastname;
 				this.codeName = codeName
 				this.driverid = driverid;
@@ -127,7 +120,7 @@
 				this.curSpeed = 0;
 				this.retired = false;
 				// Variables for the circular positioning
-				this.radiusPos = radiusPos;
+				this.radiusPos = 0;
 				this.posAngle = -90;
 				this.circumSpeed = 0;
 				this.driverCircum = (2 * Math.PI * this.radiusPos);
@@ -201,8 +194,8 @@
 					//If the racer reaches the end of the track/canvas, move them to the start of the canvas
 					
 					if(this.posAngle >= (LAP_ANGLE * this.curLap) - 90 && !this.retired){
-						this.checkPitted();
 						this.curLap += 1;
+						this.checkPitted();
 						this.check_retired();
 						this.updateSpeed();	
 
@@ -271,7 +264,6 @@
 						this.retired = true;
 						retiredDriverCount += 1;
 						this.driverStatsSpan.innerHTML = this.curStatus + " Pos: " + this.results.fields.positiontext;
-						console.log(this.pitstops);
 					}
 				};
 			};
@@ -303,7 +295,6 @@
 						pitstoplist.push(json_pitstops[i].fields);
 					}
 				}
-				console.log(pitstoplist);
 				return pitstoplist;
 			}
 
@@ -341,7 +332,9 @@
 			function create_drivers(){
 				for(var i = 0; i < json_drivers.length; i++){
 					var driverFields = json_drivers[i].fields;
-					var newDriver = new FormulaDriver(driverFields.surname, driverFields.code, json_drivers[i].pk, get_driver_results(json_drivers[i].pk), get_laptimes(json_drivers[i].pk), get_pitstops(json_drivers[i].pk), (TRACK_RADIUS * 0.98) - ((CAR_WIDTH + 3)*(i + 1)));
+					var newDriver = new FormulaDriver(driverFields.surname, driverFields.code, json_drivers[i].pk, get_driver_results(json_drivers[i].pk), get_laptimes(json_drivers[i].pk), get_pitstops(json_drivers[i].pk));
+					newDriver.radiusPos = (TRACK_RADIUS * 0.99) - ((CAR_WIDTH + 4)*(i + 1));
+					newDriver.driverCircum = (2 * Math.PI * newDriver.radiusPos);
 					newDriver.curStatus = get_final_status( newDriver );
 					newDriver.lapLength = set_lap_length();
 					//newDriver.driverColor = set_driver_color();
@@ -350,12 +343,11 @@
 					document.getElementById(newDriver.codeName).style.background = newDriver.driverColor;
 					document.getElementById('Drivers_List').querySelector('#Driver_Status_Legend').id = newDriver.codeName + "_Status";
 					newDriver.driverStatsSpan = document.getElementById(newDriver.codeName + "_Status");
-
-					//simulation_drivers[newDriver.results.fields.grid - 1] = newDriver;
 					simulation_drivers.push( newDriver );
 					
 				}
 				//simulation_drivers = orderOnGridPos(simulation_drivers);
+				console.log(simulation_drivers);
 			}
 
 			

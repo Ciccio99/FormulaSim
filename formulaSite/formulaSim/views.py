@@ -30,7 +30,7 @@ def home(request):
 def raceSim(request):
 	dictionary = {}
 	form = GetRaceForm()
-	dictionary.update({'the_form' : form})
+	
 	errorMessage = ""
 
 	
@@ -43,23 +43,25 @@ def raceSim(request):
 		if form.is_valid():
 
 			# Filter through our Race models for a race with the given year and round
-			zeRace = get_or_none(Race, year = form.cleaned_data['year'], round = form.cleaned_data['round'])
+			#zeRace = get_or_none(Race, year = form.cleaned_data['year'], round = form.cleaned_data['round'])
+			zeRace = get_or_none(Race, raceid = form.cleaned_data['selectRace'].raceid)
 			if(zeRace != None):
-				# Load JSON serializer
-				json_serializer = serializers.get_serializer("json")()
+				
 
 				dictionary.update({'race' : zeRace})
 				
 				# Getting a list of all the final results (One for each driver for that race)
-				race_results = Result.objects.filter(raceid = zeRace.raceid)
+				race_results = Result.objects.filter(raceid = zeRace.raceid).order_by('grid')
+				
 				dictionary.update({"race_results" : race_results})
 
 				# Getting a list of all driver IDs so that they can be used for filtering purposes
 				drivers_id  = []
+				drivers = []
 				for result in race_results:
+					drivers.append(Driver.objects.get(driverid=result.driverid))
 					drivers_id.append(result.driverid) 
 				# Getting all drivers based on the driver IDs in the race
-				drivers = Driver.objects.filter(driverid__in = drivers_id)
 				dictionary.update({"drivers" : drivers})
 
 
@@ -76,6 +78,8 @@ def raceSim(request):
 
 				dictionary.update({'begin_simulation' : True})
 
+				form.selectRace = zeRace;
+				dictionary.update({'the_form' : form})
 				return render(request, 'formulaSim/raceSim.html', dictionary)
 			else:
 				errorMessage = "No race exists with the given parameters!"
@@ -84,6 +88,7 @@ def raceSim(request):
 	#If request is not a POST
 	dictionary.update({'errorMessage' : errorMessage})
 	dictionary.update({'begin_simulation' : False})
+	dictionary.update({'the_form' : form})
 	return render(request, 'formulaSim/raceSim.html', dictionary)
 
 """

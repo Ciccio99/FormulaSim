@@ -170,7 +170,7 @@ class Race(models.Model):
     url = models.CharField(unique=True, max_length=255, blank=True)
     
     def __unicode__(self):
-        return 'Race ID: ' + str(self.raceid);
+        return  str(self.year) + " " + self.name;
 
     class Meta:
         managed = True
@@ -200,6 +200,7 @@ class Result(models.Model):
         return "Result for Race ID: " + str(self.raceid);
 
     class Meta:
+        ordering = ['grid']
         managed = True
         db_table = 'results'
 
