@@ -13,29 +13,32 @@
 		<header>
 			
 			<div class='site-title-container'>
-				<h1 class='header-title'>FormulaSim</h1>
+				<h1 class='header-title'>FormulaViz</h1>
 			</div>
 			<nav>
 				<ul class='nav-menu-list'>
-					<li><a class='menu-list-button' href="/">Home</a></li>
-					<li><a class='menu-list-button' href="#">About</a></li>
-					<li><a class='menu-list-button' href="/simulations">Simulations</a></li>
-					<li><a class='menu-list-button' href="drivers">Drivers</a></li>
+					<li><a class='menu-list-button btn-transitions' href="/">HOME</a></li>
+					<li><a class='menu-list-button btn-transitions' href="#">ABOUT</a></li>
+					<li><a class='menu-list-button btn-transitions' href="/simulations">SIMULATION</a></li>
+					<li><a class='menu-list-button btn-transitions' href="drivers">DRIVER</a></li>
 				</ul>
 			</nav>
 		</header>
-		{% block mainContentBlock %}
-			<div id='Home_Content_Container'>
+		<div id='Central_Content_Container'>
+			{% block mainContentBlock %}
+			<h1>Reimagining F1 Visualizations & Data</h1>
+				
+
+			{% endblock mainContentBlock %}
+		</div>
+		<footer>
+			<div class="inner">
+				<span class='authore-footer footer-content'>Created by Alberto Scicali</span>
+				<span class='source-footer footer-content'>Data sourced from Ergast Developer API</span>
 			</div>
-
-		{% endblock mainContentBlock %}
-
+    	</footer>
 	</body>
 
-	<footer>
-			<div class="inner">
-				CSCI 320 - Formula One Race Recreation
-			</div>
-    </footer>
+	
 </html>
 

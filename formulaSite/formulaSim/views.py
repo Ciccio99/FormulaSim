@@ -55,16 +55,14 @@ def raceSim(request):
 				
 				dictionary.update({"race_results" : race_results})
 
-				# Getting a list of all driver IDs so that they can be used for filtering purposes
-				drivers_id  = []
+				# Getting a list of all drivers
 				drivers = []
 				for result in race_results:
 					drivers.append(Driver.objects.get(driverid=result.driverid))
-					drivers_id.append(result.driverid) 
-				# Getting all drivers based on the driver IDs in the race
+
 				dictionary.update({"drivers" : drivers})
 
-
+				# Serializing the necessary data in json so that javascript can manipulate it
 				serialized_drivers = serializers.serialize("json", drivers)
 				dictionary.update({'serialized_drivers' : serialized_drivers})
 				serialized_laptimes = serializers.serialize("json", Laptime.objects.filter(raceid = zeRace.raceid))
@@ -82,7 +80,7 @@ def raceSim(request):
 				dictionary.update({'the_form' : form})
 				return render(request, 'formulaSim/raceSim.html', dictionary)
 			else:
-				errorMessage = "No race exists with the given parameters!"
+				errorMessage = "No race exists with the given parameters"
 		else:
 			errorMessage = "All Fields Must be filled out!"
 	#If request is not a POST

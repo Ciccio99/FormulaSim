@@ -8,60 +8,68 @@
 {% endblock extraLinksBlock %}
 
 {% block mainContentBlock %}	
-	<div class='race-form-container'>
-		<form class='get-race-form' method='POST' action="{% url 'formulaSim.views.raceSim' %}" enctype="multipart/form-data">
-			{% csrf_token %}
-			<span>{{ errorMessage }}</span>
-			<ul>
-				<li class='sim-form-items'><button class='view-race-btn' type="submit" name="submit" value="View Race">View Race</button></li>
-				<li class='sim-form-items'>{{ the_form.selectRace }}</li>
+	<div class='semi-transparent-div'>
+		<div class='race-form-container'>
+			<form class='get-race-form' method='POST' action="{% url 'formulaSim.views.raceSim' %}" enctype="multipart/form-data">
+				{% csrf_token %}
 				
-			</ul>
-		</form>
-	</div>
-	<div class='main-content-container'>
-		
-		<div class='race-info-container'>
-			
-			{% if race %}
-				
-				<div class='race-title-container'>
-					<h3>{{ race.name }}</h3>
-					<h4>{{ race.date }}</h4>
-				</div>
-			
-			{% endif %}
-			
-
-			{% if drivers %}
-				{{drivers_id}}
-				<ul class='drivers-list' id='Drivers_List'>
-					{% for driver in drivers %}
-						<li>
-							<span id='Driver_Color_Legend' class='driver-colors'></span>
-							<h4>{{ driver.forename }} {{ driver.surname }}</h4>
-							<br>
-							<span id='Driver_Status_Legend' class='driver-status'></span>
-						</li>
-					{% endfor %}
+				<ul>
+					<li class='sim-form-items'>
+						<button class='view-race-btn btn-transitions' type="submit" name="submit" value="View Race">View Race</button>
+					</li>
+					<li class='sim-form-items'>{{ the_form.selectRace }}</li>
 				</ul>
-			{% endif %}
+				<span class='form-error-message'>{{ errorMessage }}</span>
+			</form>
 		</div>
+		<div class='main-content-container'>
+			
+			<div class='race-info-container'>
+				{% if begin_simulation %}
+					{% if race %}
+						
+						<div class='race-title-container'>
+							<h3>{{ race.name }}</h3>
+							<h4>{{ race.date }}</h4>
+						</div>
+					
+					{% endif %}
+					
 
-		<div class='canvas-container'>
+					{% if drivers %}
+						{{drivers_id}}
+						<ul class='drivers-list' id='Drivers_List'>
+							{% for driver in drivers %}
+								<li>
+									<span id='Driver_Color_Legend' class='driver-colors'></span>
+									<h4>{{ driver.forename }} {{ driver.surname }}</h4>
+									<br>
+									<span id='Driver_Status_Legend' class='driver-status'></span>
+								</li>
+							{% endfor %}
+						</ul>
+					{% endif %}
+				</div>
 
-			{% if begin_simulation %}
-				<div class='slider-holder'>
-					<label for=fader>Simulation Speed</label>
-					<span class='slider-labels'>Slow</span>
-					<input type=range min=1 max=10000 value=5000 id='sim-speed-slider' oninput="outputUpdate(value)">
-					<span class='slider-labels'>Fast</span>
-				</div>	
-			{% endif %}
+				<div class='canvas-container'>
 
-			<canvas id="c" width="770" height="770">
-				Your browser does not support the HTML5 canvas.
-			</canvas>
+					
+						<div class='slider-holder'>
+							<label for=fader>Simulation Speed</label>
+							<button class='simulation-btns btn-transitions' type="button" name="button" value="Start" onclick='startSimulation()'>Start</button>
+							<span class='slider-labels'>Slow</span>
+							<input type=range min=1 max=10000 value=1000 id='sim-speed-slider'>
+							<span class='slider-labels'>Fast</span>
+						</div>	
+							
+
+					
+
+					<canvas id="c" width="770" height="770">
+						Your browser does not support the HTML5 canvas.
+					</canvas>
+				{% endif %}
+			</div>
 		</div>
 	</div>
 	{% if begin_simulation %}
@@ -73,9 +81,8 @@
 
 			// List of color variables for racers to choose from
 			var driverColorSpectrum = ['#F8C677', '#5F7BB7', '#F34A35', '#B81C46', '#2DD692', '#F9E671', '#FFAC43', 
-			'#F36B76', 
-			'#FF005C', '#2DA570', '#FEBE18', '#FF6B00', '#F35260', '#FC000F', '#2DD070', '#7F89AE', '#F3427F', '#FF8943', 
-			'#FF6600', '#E91229', '#FFA300', '#00A9B5', '#7512A7', '#2D6F70', '#D93445'
+			'#F36B76', '#FF005C', '#2DA570', '#FEBE18', '#FF6B00', '#F35260', '#FC000F', '#2DD070', '#7F89AE', '#F3427F', 
+			'#FF8943', '#FF6600', '#E91229', '#FFA300', '#00A9B5', '#7512A7', '#2D6F70', '#D93445'
 			];
 
 			// Grabbing the WIDTH and HEIGHT from the canvas DOM
@@ -137,7 +144,7 @@
 						this.curSpeed = (this.lapLength / this.laptimes[this.curLap].milliseconds) * 1000;
 					}
 					*/
-					if(!this.retired && this.laptimes[this.curLap] != null){
+					if(!this.retired && this.laptimes[this.curLap - 1] != null){
 						this.circumSpeed = ((this.driverCircum / TOTAL_CIRCUIT_LAPS) / this.laptimes[this.curLap - 1].milliseconds);
 					}
 				};
@@ -192,13 +199,11 @@
 
 				this.checkLapped = function(){
 					//If the racer reaches the end of the track/canvas, move them to the start of the canvas
-					
 					if(this.posAngle >= (LAP_ANGLE * this.curLap) - 90 && !this.retired){
 						this.curLap += 1;
 						this.checkPitted();
 						this.check_retired();
 						this.updateSpeed();	
-
 					}	
 				};
 
@@ -347,7 +352,6 @@
 					
 				}
 				//simulation_drivers = orderOnGridPos(simulation_drivers);
-				console.log(simulation_drivers);
 			}
 
 			
@@ -396,25 +400,34 @@
 
 	   		// Var to hold animation ID so that it can be cancelled when simulation
 	   		// is complete or paused
-	   		var animationID;
+	   		var animationID = null;
 	   		var raceInterval = null;
 	   		function draw(){
 				// Clears the canvas so that old stuff doesn't remain
 				ctx.clearRect(0,0, WIDTH, HEIGHT);
 
+				// Draws the background track
 				drawCircleTrack();
+
+				// Draws the track lap lines
 				drawLapLines();
 
-				//Move cars and draw them
+				// Loop through drivers to draw them
 				for(var i = 0; i < simulation_drivers.length; i++){
-					//simulation_drivers[i].move();
 					simulation_drivers[i].drawRacer();	
 				}
-				animationID = requestAnimationFrame(draw);
+
+				// Checks to see if the racr is finished, if so stop all animations
+				// and calculations
 				if(isRaceFinished()){
 					window.cancelAnimationFrame(animationID);
 					clearInterval(raceInterval);
 				}
+				else{
+					animationID = requestAnimationFrame(draw);
+				}
+
+				
 				
 			}
 
@@ -426,13 +439,32 @@
 			}
 
 			
-			window.onload = function(){
+			function startSimulation(){
 				//Creates drivers for simulation
 				create_drivers();
-
-				window.requestAnimationFrame(draw);
+				animationID = window.requestAnimationFrame(draw);
 				raceInterval = setInterval(function(){simulate();}, 1);
 				
+			}
+
+			function pauseSimulation(){
+				if(animationID != null || raceInterval != null){
+					window.cancelAnimationFrame(animationID);
+					clearInterval(raceInterval);
+
+					animationID = null;
+					raceInterval = null;
+				}
+			}
+
+			function resumeSimulation(){
+				animationID = window.requestAnimationFrame(draw);
+				raceInterval = setInterval(function(){simulate();}, 1);
+			}
+
+			function restartSimulation(){
+				simulation_drivers.length = 0;
+				startSimulation();
 			}
 
 		</script>

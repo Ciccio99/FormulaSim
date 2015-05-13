@@ -2,7 +2,6 @@
 .Patients-Container{
 	height: 100%;
 	width: 100%;
-	margin: 2rem auto 0 auto;
 	display: -webkit-box;      /* OLD - iOS 6-, Safari 3.1-6 */
 	display: -moz-box;         /* OLD - Firefox 19- (buggy but mostly works) */
 	display: -ms-flexbox;      /* TWEENER - IE 10 */

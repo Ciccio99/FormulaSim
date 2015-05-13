@@ -1,49 +1,74 @@
 @import url('resetStyle.css');
-
+@import url(http://fonts.googleapis.com/css?family=Exo+2:400,500,700,300);
 
 
 html {
 	height: 100%;
 	width: 100%;
 	font-size: 60%;
-	font-family: "Helvetica Neu", Helvetica, Arial, sans-serif;
-	background: url("images/f1_ferrari_bg.jpg") no-repeat center center fixed; 
-	-webkit-background-size: cover;
-	-moz-background-size: cover;
-	-o-background-size: cover;
-	background-size: cover;
-
-
+	font-family: 'Exo 2', Helvetica, Arial, sans-serif;
 }
 
 h1{
-	font: normal 300 3.5rem Helvetica, Arial, sans-serif;
+	font: normal 300 3.5rem 'Exo 2',Helvetica, Arial, sans-serif;
 	color: #FAFAFA;
 
 }
 
 h4{
-	font: normal 300 2rem Helvetica, Arial, sans-serif;
+	font: normal 300 2rem 'Exo 2',Helvetica, Arial, sans-serif;
 	color: #FAFAFA;
 }
 
 header{
 	width: 100%;
+	background-color: rgba(10, 10, 10, .9);	
+}
+
+body {
+	width: 100%;
+	height: 100%;
 	
+}
+
+footer{
+	font: normal 300 1.4rem 'Exo 2',Helvetica, Arial, sans-serif;
+	color: #FAFAFA;
+	background-color: rgba(10, 10, 10, .9);	
+	box-sizing: border-box;
+	padding: 1.5rem;
+}
+
+#Central_Content_Container{
+	width: 100%;
+	height: 100%;
+	background: url("images/f1_ferrari_bg.jpg") no-repeat center center fixed; 
+	-webkit-background-size: cover;
+	-moz-background-size: cover;
+	-o-background-size: cover;
+	background-size: cover;
+}
+
+.btn-transitions{
+	-webkit-transition: all 0.2s;
+  	-moz-transition: all 0.2s;
+  	-ms-transition: all 0.2s;
+  	-o-transition: all 0.2s;
+  	transition: all 0.2s;
 }
 
 
 
 .site-title-container{
-	font: normal 500 3.5rem Helvetica, Arial, sans-serif;
+	
 	box-sizing: border-box;
-	padding: 3rem 2rem 1rem 2rem;
+	padding: 2rem 2rem 1rem 2rem;
 	margin: 0 auto 0 auto;
 	text-align: center;
 }
 
 .header-title{
-	transform: scaleY(1.1);
+	font: normal 300 3.8rem 'Exo 2', Arial, sans-serif;	
 }
 
 .formulaSim-logo{
@@ -53,12 +78,9 @@ header{
 	display: inline-block;
 }
 
-header nav{
-	margin-bottom: 3rem;
-}
 
 .nav-menu-list{
-	font: normal 500 1.6rem Helvetica, Arial, sans-serif;
+	font: normal 500 1.6rem 'Exo 2', Arial, sans-serif;
 	color: #FAFAFA;
 	width: 40%;
 	margin: 0 auto 0 auto;
@@ -76,21 +98,22 @@ header nav{
 }
 
 .menu-list-button:hover{
-	color: #e6e6e6;
+	color: #7D7B7B;
 }
 
 
-body {
-	width: 100%;
-	background-color: rgba(10, 10, 10, .8);
-}
+
+
+
+
+
 
 .race-form-container{
 	width: 100%;
 	display: flex;
 	justify-content: center;
 	box-sizing: border-box;
-	padding: 1rem 2rem 2rem 2rem;
+	padding: 3rem 2rem 2rem 2rem;
 }
 
 .race-form-container h4{
@@ -128,6 +151,15 @@ body {
 	box-shadow: 0 0 8px rgba(255, 255, 255, 1);
 }
 
+.form-error-message{
+	font: normal 500 1.4rem Helvetica, Arial, sans-serif;
+	color: #FAFAFA;
+	width: 100%;
+	display: block;
+	text-align: center;
+	margin: .5rem 0 0 0;
+}
+
 .view-race-btn{
 	font: normal 500 1.4rem Helvetica, Arial, sans-serif;
 	background-color: #FAFAFA;
@@ -142,7 +174,7 @@ body {
 }
 
 .view-race-btn:hover{
-	background-color: #e6e6e6;
+	background-color: #7D7B7B;
 
 }
 
@@ -152,6 +184,11 @@ body {
 }
 
 
+.semi-transparent-div{
+	height: 100%;
+	background-color: rgba(10, 10, 10, .7);
+
+}
 
 .race-title-container{
 	color: #fafafa;
@@ -167,7 +204,7 @@ body {
 	box-sizing: border-box;
 	padding: 2rem;
 	margin: 0 auto 0 auto;
-	width: 26rem;
+	width: 36rem;
 	text-align: center;
 }
 .slider-holder label{
@@ -176,6 +213,26 @@ body {
 
 .slider-labels{
 	font: normal 500 1.4rem Helvetica, Arial, sans-serif;
+}
+
+.simulation-btns{
+	font: normal 500 1.4rem Helvetica, Arial, sans-serif;
+	background-color: #FAFAFA;
+	outline: none 0;
+	border: none;
+	border-radius: 4px;
+	box-sizing: border-box;
+	padding: 1rem;
+	cursor: pointer;
+	width: 8rem;
+	height: 4rem;
+	display: inline-block;
+	float: left;
+}
+
+.simulation-btns:hover{
+	color: #e6e6e6;
+
 }
 
 
@@ -232,5 +289,9 @@ body {
 .canvas-container{
 	box-sizing: border-box;
 	padding: 2rem;
+}
+
+.source-footer{
+	float: right;
 }
 
