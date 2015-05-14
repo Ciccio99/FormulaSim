@@ -10,19 +10,27 @@ html {
 }
 
 h1{
-	font: normal 300 3.5rem 'Exo 2',Helvetica, Arial, sans-serif;
+	font: normal 300 3.5rem 'Exo 2', Helvetica, Arial, sans-serif;
 	color: #FAFAFA;
 
 }
 
 h4{
-	font: normal 300 2rem 'Exo 2',Helvetica, Arial, sans-serif;
-	color: #FAFAFA;
+	font: normal 300 2rem 'Exo 2', Helvetica, Arial, sans-serif;
+	color: #222;
 }
 
 header{
 	width: 100%;
-	background-color: rgba(10, 10, 10, .9);	
+	background-color: #131313;
+	height: 9rem;
+	display: flex;
+	justify-content: space-between;
+}
+
+.header-menu-nav{
+	box-sizing: border-box;
+	padding: 2.9rem 0 0 0;
 }
 
 body {
@@ -36,7 +44,8 @@ footer{
 	color: #FAFAFA;
 	background-color: rgba(10, 10, 10, .9);	
 	box-sizing: border-box;
-	padding: 1.5rem;
+	padding: 1rem;
+	height: 4rem;
 }
 
 #Central_Content_Container{
@@ -60,15 +69,14 @@ footer{
 
 
 .site-title-container{
-	
 	box-sizing: border-box;
 	padding: 2rem 2rem 1rem 2rem;
-	margin: 0 auto 0 auto;
 	text-align: center;
+	display: inline-block;
 }
 
 .header-title{
-	font: normal 300 3.8rem 'Exo 2', Arial, sans-serif;	
+	font: normal 500 4.5rem 'Exo 2', Arial, sans-serif;	
 }
 
 .formulaSim-logo{
@@ -82,8 +90,7 @@ footer{
 .nav-menu-list{
 	font: normal 500 1.6rem 'Exo 2', Arial, sans-serif;
 	color: #FAFAFA;
-	width: 40%;
-	margin: 0 auto 0 auto;
+	width: 50rem;
 	box-sizing: border-box;
 	padding: 1rem;
 	display: flex;
@@ -101,19 +108,120 @@ footer{
 	color: #7D7B7B;
 }
 
+.splash-phrase{
+		font: normal 500 5rem 'Exo 2', Arial, sans-serif;
+
+}
 
 
 
 
 
+.background-image{
+	min-height: 100%;
+	background: url("images/f1_ferrari_bg.jpg") no-repeat center center fixed; 
+	-webkit-background-size: cover;
+	-moz-background-size: cover;
+	-o-background-size: cover;
+	background-size: cover;
+}
+.semi-transparent-div{
+	min-height: 100%;
+	background-color: rgba(10, 10, 10, .7);
+	overflow: auto;
+}
 
+
+
+
+
+.view-race-btn{
+	font: normal 500 1.4rem 'Exo 2', Helvetica, Arial, sans-serif;
+	background-color: #353535;
+	color: #FAFAFA;
+	outline: none 0;
+	border: none;
+	box-sizing: border-box;
+	padding: 1rem;
+	cursor: pointer;
+	width: 10rem;
+	height: 4rem;
+	margin-left: 1rem;
+}
+
+.view-race-btn:hover{
+	color: #222;
+	background-color: #FAFAFA;
+}
+
+.main-content-container{
+	height: 100%;
+	width: 100%;
+	display: flex;
+}
+
+.slider-title{
+	display: block;
+	width: 100%;
+}
+
+.slider-holder{
+	color: #fafafa;
+	width: 46rem;
+	font: normal 500 2rem 'Exo 2', Helvetica, Arial, sans-serif;
+	box-sizing: border-box;
+	margin: 0 auto 0 auto;
+	
+	display: flex;
+	justify-content: space-around;
+	flex-flow: row wrap;
+	
+}
+
+.slider-inner-div{
+	display: inline-block;
+}
+
+.slider-holder label{
+	display: block;
+	text-align: center;
+}
+
+.slider-labels{
+	font: normal 500 1.4rem 'Exo 2', Helvetica, Arial, sans-serif;
+}
+
+.simulation-btns{
+	font: normal 500 1.4rem 'Exo 2', Helvetica, Arial, sans-serif;
+	background-color: #C90000;
+	color: #FAFAFA;
+	outline: none 0;
+	border: none;
+	box-sizing: border-box;
+	cursor: pointer;
+	width: 8rem;
+	height: 3rem;
+	display: inline-block;
+}
+
+.simulation-btns:hover{
+	background-color: #353535;
+}
+
+
+
+.race-info-container{
+	height: 100%;
+	background-color: rgba(254, 254, 254, .85);
+	display: inline-block;
+	float: left;
+}
 
 .race-form-container{
 	width: 100%;
-	display: flex;
-	justify-content: center;
 	box-sizing: border-box;
-	padding: 3rem 2rem 2rem 2rem;
+	padding: 2rem 2rem 2rem 2rem;
+	background-color: rgba(201, 0, 0, .9);
 }
 
 .race-form-container h4{
@@ -125,22 +233,17 @@ footer{
 	width: 36rem;
 }
 
-.get-race-form ul{
-	display: flex;
-	justify-content: space-around;
-}
-
 .sim-form-items{
 	display: inline-block;
 }
 
 .race-form-input{
-	font: normal 500 1.4rem Helvetica, Arial, sans-serif;
+	font: normal 500 1.4rem 'Exo 2', Helvetica, Arial, sans-serif;
 	background-color: #FAFAFA;
 	outline: none 0;
 	border: none;
-	-webkit-border-radius: 2px;
-	border-radius: 2px;
+	-webkit-border-radius: none 0;
+	border-radius: none 0;
 	box-sizing: border-box;
 	padding: 1rem;
 	width: 23rem;
@@ -152,7 +255,7 @@ footer{
 }
 
 .form-error-message{
-	font: normal 500 1.4rem Helvetica, Arial, sans-serif;
+	font: normal 500 1.4rem 'Exo 2', Helvetica, Arial, sans-serif;
 	color: #FAFAFA;
 	width: 100%;
 	display: block;
@@ -160,110 +263,49 @@ footer{
 	margin: .5rem 0 0 0;
 }
 
-.view-race-btn{
-	font: normal 500 1.4rem Helvetica, Arial, sans-serif;
-	background-color: #FAFAFA;
-	outline: none 0;
-	border: none;
-	border-radius: 4px;
-	box-sizing: border-box;
-	padding: 1rem;
-	cursor: pointer;
-	width: 10rem;
-	height: 4rem;
-}
-
-.view-race-btn:hover{
-	background-color: #7D7B7B;
-
-}
-
-.main-content-container{
-	display: flex;
-	justify-content: space-around;
-}
-
-
-.semi-transparent-div{
-	height: 100%;
-	background-color: rgba(10, 10, 10, .7);
-
-}
-
 .race-title-container{
-	color: #fafafa;
-	font: normal 500 2rem Helvetica, Arial, sans-serif;
+	color: #151516;
 	box-sizing: border-box;
-	padding:  2rem;
-	text-align: center;
+	padding: 2rem 2rem 2rem 3rem;
 }
 
-.slider-holder{
-	color: #fafafa;
-	font: normal 500 2rem Helvetica, Arial, sans-serif;
-	box-sizing: border-box;
-	padding: 2rem;
-	margin: 0 auto 0 auto;
-	width: 36rem;
-	text-align: center;
-}
-.slider-holder label{
+.race-title{
+	font: normal 500 3rem 'Exo 2', Helvetica, Arial, sans-serif;
 	display: block;
+	margin-bottom: 1rem;
 }
 
-.slider-labels{
-	font: normal 500 1.4rem Helvetica, Arial, sans-serif;
+.race-location{
+	font: normal 300 2.8rem 'Exo 2', Helvetica, Arial, sans-serif;
+	display: block;
+	margin-bottom: 0.5rem;
 }
 
-.simulation-btns{
-	font: normal 500 1.4rem Helvetica, Arial, sans-serif;
-	background-color: #FAFAFA;
-	outline: none 0;
-	border: none;
-	border-radius: 4px;
-	box-sizing: border-box;
-	padding: 1rem;
-	cursor: pointer;
-	width: 8rem;
-	height: 4rem;
-	display: inline-block;
-	float: left;
-}
-
-.simulation-btns:hover{
-	color: #e6e6e6;
-
-}
+.race-date{
+	font: normal 300 2.8rem 'Exo 2', Helvetica, Arial, sans-serif;
+	display: block;
 
 
-
-.race-info-container{
-	color: #fafafa;
-	font: normal 300 1.5rem Helvetica, Arial, sans-serif;
-	width: 28rem;
-	display: -webkit-box;      /* OLD - iOS 6-, Safari 3.1-6 */
-	display: -moz-box;         /* OLD - Firefox 19- (buggy but mostly works) */
-	display: -ms-flexbox;      /* TWEENER - IE 10 */
-	display: -webkit-flex;     /* NEW - Chrome */
-	display: flex;
-	flex-flow: column;
-	justify-content: flex-start;	
-	box-sizing: border-box;
-	padding: 2rem
 }
 
 .drivers-list{
+	width: 48rem;
 	color: #fafafa;
+	display: flex;
+	justify-content: space-around;
+	flex-flow: row wrap;
+	margin: 2rem 0 0 0;
 }
 
 .drivers-list li{
 	box-sizing: border-box;
 	padding: 0.5rem;
 	height: 4.6rem;
+	width: 20rem;
 }
 
 .drivers-list h4{
-	font: normal 700 1.4rem Helvetica, Arial, sans-serif;
+	font: normal 700 1.4rem 'Exo 2', Helvetica, Arial, sans-serif;
 	display: inline-block;
 	box-sizing: border-box;
 	padding: 0 0 0 1rem;
@@ -271,15 +313,15 @@ footer{
 }
 
 .driver-colors{
-	height: 100%;
-	width: 10px;
+	height: 96%;
+	width: 8px;
 	display: inline-block;
 	float: left;
 }
 
 .driver-status{
-	font: normal 300 1.4rem Helvetica, Arial, sans-serif;
-	color: #C6C6C6;
+	font: normal 300 1.4rem 'Exo 2', Helvetica, Arial, sans-serif;
+	color: #808080;
 	display: inline-block;
 	box-sizing: border-box;
 	padding: 0 0 0 1rem;
@@ -287,8 +329,10 @@ footer{
 
 
 .canvas-container{
+	display: inline-block;
+	margin: 0 auto 0 auto;
 	box-sizing: border-box;
-	padding: 2rem;
+	padding: 2rem 0 0 0;
 }
 
 .source-footer{

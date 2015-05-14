@@ -49,6 +49,7 @@ def raceSim(request):
 				
 
 				dictionary.update({'race' : zeRace})
+				dictionary.update({'circuit' : Circuit.objects.get(circuitid = zeRace.circuitid)})
 				
 				# Getting a list of all the final results (One for each driver for that race)
 				race_results = Result.objects.filter(raceid = zeRace.raceid).order_by('grid')

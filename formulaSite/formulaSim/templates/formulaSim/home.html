@@ -13,24 +13,25 @@
 		<header>
 			
 			<div class='site-title-container'>
-				<h1 class='header-title'>FormulaViz</h1>
+				<h1 class='header-title'>FormulaSim</h1>
 			</div>
-			<nav>
+			<nav class='header-menu-nav'>
 				<ul class='nav-menu-list'>
 					<li><a class='menu-list-button btn-transitions' href="/">HOME</a></li>
 					<li><a class='menu-list-button btn-transitions' href="#">ABOUT</a></li>
 					<li><a class='menu-list-button btn-transitions' href="/simulations">SIMULATION</a></li>
-					<li><a class='menu-list-button btn-transitions' href="drivers">DRIVER</a></li>
+					<li><a class='menu-list-button btn-transitions' href="drivers">DRIVERS</a></li>
 				</ul>
 			</nav>
 		</header>
-		<div id='Central_Content_Container'>
-			{% block mainContentBlock %}
-			<h1>Reimagining F1 Visualizations & Data</h1>
+		
+		{% block mainContentBlock %}
+			<div id='Central_Content_Container'>
+				<h1 class='splash-phrase'>Reimagining F1 Data Visualizations</h1>
 				
-
-			{% endblock mainContentBlock %}
-		</div>
+			</div>
+		{% endblock mainContentBlock %}
+		
 		<footer>
 			<div class="inner">
 				<span class='authore-footer footer-content'>Created by Alberto Scicali</span>
