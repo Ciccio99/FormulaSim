@@ -1,0 +1,250 @@
+@import url('resetStyle.css');
+@import url(http://fonts.googleapis.com/css?family=Exo+2:400,500,700,300);
+
+
+html {
+	height: 100%;
+	width: 100%;
+	font-size: 60%;
+	font-family: 'Exo 2', Helvetica, Arial, sans-serif;
+}
+
+h1{
+	font: normal 300 3.5rem 'Exo 2', Helvetica, Arial, sans-serif;
+	color: #FAFAFA;
+
+}
+
+h4{
+	font: normal 300 2rem 'Exo 2', Helvetica, Arial, sans-serif;
+	color: #222;
+}
+
+header{
+	width: 100%;
+	background-color: #131313;
+	height: 9rem;
+	display: flex;
+	justify-content: space-between;
+}
+
+.header-menu-nav{
+	box-sizing: border-box;
+	padding: 2.9rem 0 0 0;
+}
+
+body {
+	width: 100%;
+	height: 100%;
+}
+
+
+#Central_Content_Container{
+	width: 100%;
+	/*
+	background: url("images/f1_ferrari_bg.jpg") no-repeat center center fixed; 
+	-webkit-background-size: cover;
+	-moz-background-size: cover;
+	-o-background-size: cover;
+	background-size: cover;
+	*/
+}
+
+.background-image{
+	background: url("images/f1_ferrari_bg.jpg") no-repeat center center fixed; 
+	-webkit-background-size: cover;
+	-moz-background-size: cover;
+	-o-background-size: cover;
+	background-size: cover;
+}
+
+.btn-transitions{
+	-webkit-transition: all 0.2s;
+  	-moz-transition: all 0.2s;
+  	-ms-transition: all 0.2s;
+  	-o-transition: all 0.2s;
+  	transition: all 0.2s;
+}
+
+
+
+.site-title-container{
+	box-sizing: border-box;
+	padding: 2.6rem 2rem 1rem 2rem;
+	text-align: center;
+	display: inline-block;
+}
+
+.header-title{
+	font: normal 500 4rem 'Exo 2', Arial, sans-serif;	
+}
+
+.formulaSim-logo{
+	width: 20px;
+	height: auto;
+	background-image: url("images/f1_logo.png");
+	display: inline-block;
+}
+
+
+.nav-menu-list{
+	font: normal 500 1.6rem 'Exo 2', Arial, sans-serif;
+	color: #FAFAFA;
+	width: 50rem;
+	box-sizing: border-box;
+	padding: 1rem;
+	display: flex;
+	justify-content: center;
+}
+
+.menu-list-button{
+	color: #FAFAFA;
+	display: inline-block;
+	box-sizing: border-box;
+	padding: 1rem 2rem 1rem 2rem;
+}
+
+.menu-list-button:hover{
+	color: #7D7B7B;
+}
+
+/*
+	Menu items underlining
+*/
+
+.cmn-t-underline {
+  position: relative;
+}
+.cmn-t-underline:after {
+  display: block;
+  position: absolute;
+  left: 0;
+  bottom: -10px;
+  width: 0;
+  height: 4px;
+  background-color: #C90000;
+  content: "";
+  transition: width 0.2s;
+}
+.cmn-t-underline:hover {
+  color: #7D7B7B;
+}
+.cmn-t-underline:hover:after {
+  width: 100%;
+}
+
+/*
+	Splash page styling
+*/
+
+.splash-holder{
+	height: 58rem;
+	width: 100%;
+	position: relative;
+	display: block;
+}
+
+.splash-content-holder{
+	display: block;
+	position: absolute;
+	right: 5rem;
+	bottom: 12rem;
+}
+
+.splash-phrase{
+	font: normal 500 6.5rem 'Exo 2', Arial, sans-serif;
+
+}
+
+.splash-simulation-btn{
+	outline: none 0;
+	border: none;
+	font: normal 500 2rem 'Exo 2', Helvetica, Arial, sans-serif;
+	/*background-color: #353535;*/
+	color: #FAFAFA;
+	background-color: #C90000;
+	box-sizing: border-box;
+	padding: 1rem;
+	cursor: pointer;
+	width: 22rem;
+	height: 6rem;
+	margin: 1.5rem 0 0 .4rem;
+}
+
+.splash-simulation-btn:hover{
+	background-color: #353535;
+}
+
+/*
+	About page styling
+*/
+
+.about-holder{
+	height: 58rem;
+	width: 100%;
+	background-color: rgba(10, 10, 10, .7);
+	overflow: auto;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+}
+
+.about-content-holder{
+	display: block;
+	width: 104rem;
+	margin: 0 auto 0 auto;
+}
+
+.about-title{
+	font: normal 500 6.5rem 'Exo 2',Helvetica, Arial, sans-serif;
+}
+
+.about-blerb{
+	color: #FAFAFA;
+	font: normal 300 3.5rem 'Exo 2',Helvetica, Arial, sans-serif;
+	margin: 1.5rem 0 0 0;
+}
+
+/*
+	Footer styling
+*/
+/*
+.page-wrap {
+  min-height: 100%;
+  margin-bottom: -4rem; 
+}
+.page-wrap:after {
+  content: "";
+  display: block;
+  height: 4rem;
+}
+*/
+
+footer{
+	font: normal 300 1.4rem 'Exo 2',Helvetica, Arial, sans-serif;
+	color: #FAFAFA;
+	background-color: rgba(10, 10, 10, .9);	
+	box-sizing: border-box;
+	padding: 1rem;
+	height: 4rem;
+	width: 100%;
+}
+
+.source-footer{
+	float: right;
+}
+
+
+/*
+	Extra play styles
+*/
+
+.hidden{
+	visibility: hidden;
+}
+
+
+
+
+
+

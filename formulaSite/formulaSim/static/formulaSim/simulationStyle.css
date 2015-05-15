@@ -1,139 +1,17 @@
-@import url('resetStyle.css');
-@import url(http://fonts.googleapis.com/css?family=Exo+2:400,500,700,300);
-
-
-html {
-	height: 100%;
-	width: 100%;
-	font-size: 60%;
-	font-family: 'Exo 2', Helvetica, Arial, sans-serif;
-}
-
-h1{
-	font: normal 300 3.5rem 'Exo 2', Helvetica, Arial, sans-serif;
-	color: #FAFAFA;
-
-}
-
-h4{
-	font: normal 300 2rem 'Exo 2', Helvetica, Arial, sans-serif;
-	color: #222;
-}
-
-header{
-	width: 100%;
-	background-color: #131313;
-	height: 9rem;
-	display: flex;
-	justify-content: space-between;
-}
-
-.header-menu-nav{
-	box-sizing: border-box;
-	padding: 2.9rem 0 0 0;
-}
-
-body {
-	width: 100%;
-	height: 100%;
-	
-}
-
-footer{
-	font: normal 300 1.4rem 'Exo 2',Helvetica, Arial, sans-serif;
-	color: #FAFAFA;
-	background-color: rgba(10, 10, 10, .9);	
-	box-sizing: border-box;
-	padding: 1rem;
-	height: 4rem;
-}
-
-#Central_Content_Container{
-	width: 100%;
-	height: 100%;
-	background: url("images/f1_ferrari_bg.jpg") no-repeat center center fixed; 
-	-webkit-background-size: cover;
-	-moz-background-size: cover;
-	-o-background-size: cover;
-	background-size: cover;
-}
-
-.btn-transitions{
-	-webkit-transition: all 0.2s;
-  	-moz-transition: all 0.2s;
-  	-ms-transition: all 0.2s;
-  	-o-transition: all 0.2s;
-  	transition: all 0.2s;
-}
-
-
-
-.site-title-container{
-	box-sizing: border-box;
-	padding: 2rem 2rem 1rem 2rem;
-	text-align: center;
-	display: inline-block;
-}
-
-.header-title{
-	font: normal 500 4.5rem 'Exo 2', Arial, sans-serif;	
-}
-
-.formulaSim-logo{
-	width: 20px;
-	height: auto;
-	background-image: url("images/f1_logo.png");
-	display: inline-block;
-}
-
-
-.nav-menu-list{
-	font: normal 500 1.6rem 'Exo 2', Arial, sans-serif;
-	color: #FAFAFA;
-	width: 50rem;
-	box-sizing: border-box;
-	padding: 1rem;
-	display: flex;
-	justify-content: center;
-}
-
-.menu-list-button{
-	color: #FAFAFA;
-	display: inline-block;
-	box-sizing: border-box;
-	padding: 1rem 2rem 1rem 2rem;
-}
-
-.menu-list-button:hover{
-	color: #7D7B7B;
-}
-
-.splash-phrase{
-		font: normal 500 5rem 'Exo 2', Arial, sans-serif;
-
-}
-
-
-
-
-
 .background-image{
-	min-height: 100%;
 	background: url("images/f1_ferrari_bg.jpg") no-repeat center center fixed; 
 	-webkit-background-size: cover;
 	-moz-background-size: cover;
 	-o-background-size: cover;
 	background-size: cover;
 }
+
 .semi-transparent-div{
-	min-height: 100%;
 	background-color: rgba(10, 10, 10, .7);
 	overflow: auto;
+	display: flex;
+	height: 100%;
 }
-
-
-
-
 
 .view-race-btn{
 	font: normal 500 1.4rem 'Exo 2', Helvetica, Arial, sans-serif;
@@ -154,12 +32,6 @@ footer{
 	background-color: #FAFAFA;
 }
 
-.main-content-container{
-	height: 100%;
-	width: 100%;
-	display: flex;
-}
-
 .slider-title{
 	display: block;
 	width: 100%;
@@ -171,11 +43,11 @@ footer{
 	font: normal 500 2rem 'Exo 2', Helvetica, Arial, sans-serif;
 	box-sizing: border-box;
 	margin: 0 auto 0 auto;
-	
 	display: flex;
 	justify-content: space-around;
 	flex-flow: row wrap;
-	
+	box-sizing: border-box;
+	padding: 3rem 0 4rem 0;
 }
 
 .slider-inner-div{
@@ -211,7 +83,7 @@ footer{
 
 
 .race-info-container{
-	height: 100%;
+	width: 48rem;
 	background-color: rgba(254, 254, 254, .85);
 	display: inline-block;
 	float: left;
@@ -270,7 +142,7 @@ footer{
 }
 
 .race-title{
-	font: normal 500 3rem 'Exo 2', Helvetica, Arial, sans-serif;
+	font: normal 500 3.5rem 'Exo 2', Helvetica, Arial, sans-serif;
 	display: block;
 	margin-bottom: 1rem;
 }
@@ -289,17 +161,18 @@ footer{
 }
 
 .drivers-list{
-	width: 48rem;
+	width: 100%;
 	color: #fafafa;
 	display: flex;
-	justify-content: space-around;
+	justify-content: flex-start;
 	flex-flow: row wrap;
-	margin: 2rem 0 0 0;
+	margin: 2rem 0 4rem 0;
 }
 
 .drivers-list li{
 	box-sizing: border-box;
 	padding: 0.5rem;
+	margin: 0 0 0 2.5rem;
 	height: 4.6rem;
 	width: 20rem;
 }
@@ -309,7 +182,6 @@ footer{
 	display: inline-block;
 	box-sizing: border-box;
 	padding: 0 0 0 1rem;
-
 }
 
 .driver-colors{
@@ -327,15 +199,23 @@ footer{
 	padding: 0 0 0 1rem;
 }
 
+.driver-position-circles{
+	font: normal 300 1.3rem 'Exo 2', Helvetica, Arial, sans-serif;
+	width: 25px;
+	height: 25px;
+	background-color: #353535;
+	border-radius: 100%;
+	display: inline-block;
+	float: right;
+	color: #FAFAFA;
+	text-align: center;
+	box-sizing: border-box;
+	line-height: 26px;
+}
+
 
 .canvas-container{
 	display: inline-block;
 	margin: 0 auto 0 auto;
 	box-sizing: border-box;
-	padding: 2rem 0 0 0;
 }
-
-.source-footer{
-	float: right;
-}
-

@@ -83,7 +83,7 @@ def raceSim(request):
 			else:
 				errorMessage = "No race exists with the given parameters"
 		else:
-			errorMessage = "All Fields Must be filled out!"
+			errorMessage = "A race must be selected"
 	#If request is not a POST
 	dictionary.update({'errorMessage' : errorMessage})
 	dictionary.update({'begin_simulation' : False})
