@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 {% load staticfiles %}
-<html class='background-image'>
+<html >
 	<head>
 		<title>FormulaSim</title>
 		<link rel="stylesheet" type="text/css" href="{% static 'formulaSim/homeStyle.css' %}">
@@ -28,16 +28,17 @@
 		
 		{% block mainContentBlock %}
 			<div id='Central_Content_Container'>
-				<div class='splash-holder'>
+				<div class='splash-holder background-image'>
 					<div class='splash-content-holder'>
-						<h1 class='splash-phrase'>F1 Data Reimagined</h1>
+						<h1 class='splash-phrase'>F1 DATA REIMAGINED</h1>
 						<button class='splash-simulation-btn btn-transitions' type="button" name="button" value="View Simulations" onclick="location.href = '/simulations'">View Simulations</button>
 					</div>
 				</div>
 				<div id='About_Page' class='about-holder'>
 					<div class='about-content-holder'>
 						<h1 class='about-title'>About</h1>
-						<p class='about-blerb'>What started as a class projects has become much more than that. FormulaSim was spawned from the idea of making FormulaOne data more approachable and enjoyable. Through visuals and graphics, explore the world of F1. Enjoy your time here!</p>
+						<p class='about-blerb'>What started as a simple class project has evolved into something greater.
+							FormulaSim was spawned from the idea of making FormulaOne data more approachable and enjoyable. Through visuals and graphics, explore the world of F1. Enjoy your time here and feel free to contact me with any suggestions or features you'd like to see added!</p>
 					</div>
 				</div>
 			</div>
@@ -46,7 +47,7 @@
 		<footer>
 			<div class="inner">
 				<span class='authore-footer footer-content'>Created by Alberto Scicali</span>
-				<span class='source-footer footer-content'>Data sourced from Ergast Developer API</span>
+				<span class='source-footer footer-content'><a href="http://ergast.com/mrd/" target='_blank'>Data sourced from Ergast Developer API</a></span>
 			</div>
     	</footer>
 	</body>

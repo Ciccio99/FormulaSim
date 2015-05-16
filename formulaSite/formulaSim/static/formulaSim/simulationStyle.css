@@ -1,16 +1,10 @@
-.background-image{
-	background: url("images/f1_ferrari_bg.jpg") no-repeat center center fixed; 
-	-webkit-background-size: cover;
-	-moz-background-size: cover;
-	-o-background-size: cover;
-	background-size: cover;
+.simulation-background-holder{
+	min-height: 100%;
 }
 
 .semi-transparent-div{
 	background-color: rgba(10, 10, 10, .7);
-	overflow: auto;
 	display: flex;
-	height: 100%;
 }
 
 .view-race-btn{
@@ -47,7 +41,7 @@
 	justify-content: space-around;
 	flex-flow: row wrap;
 	box-sizing: border-box;
-	padding: 3rem 0 4rem 0;
+	padding: 5rem 0 6rem 0;
 }
 
 .slider-inner-div{
@@ -218,4 +212,5 @@
 	display: inline-block;
 	margin: 0 auto 0 auto;
 	box-sizing: border-box;
+	padding: 0 0 4rem 0;
 }

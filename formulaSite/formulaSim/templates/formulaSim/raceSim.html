@@ -9,8 +9,9 @@
 {% endblock extraLinksBlock %}
 
 {% block mainContentBlock %}	
-	<div class='semi-transparent-div'>
-		
+	<div class='simulation-background-holder background-image'>
+
+		<div class='semi-transparent-div'>
 		
 			<div class='race-info-container'>
 				<div class='race-form-container'>
@@ -73,10 +74,14 @@
 						Your browser does not support the HTML5 canvas.
 					</canvas>
 				{% endif %}
-			</div>		
+			</div>	
+		</div>	
 	</div>
 	{% if begin_simulation %}
 		<script type="text/javascript">
+			/* Author: Alberto Scicali
+					   cicciobello00@gmail.com
+			*/
 			// Initial variables
 			// The cnavas and its context
 			var c = document.getElementById("c");

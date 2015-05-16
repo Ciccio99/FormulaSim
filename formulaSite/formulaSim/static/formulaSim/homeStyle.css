@@ -1,6 +1,5 @@
 @import url('resetStyle.css');
-@import url(http://fonts.googleapis.com/css?family=Exo+2:400,500,700,300);
-
+@import url(http://fonts.googleapis.com/css?family=Exo+2:700,300,400|Roboto+Condensed:400,700);
 
 html {
 	height: 100%;
@@ -22,7 +21,7 @@ h4{
 
 header{
 	width: 100%;
-	background-color: #131313;
+	background-color: rgba(20, 20, 20, 1);
 	height: 9rem;
 	display: flex;
 	justify-content: space-between;
@@ -51,7 +50,7 @@ body {
 }
 
 .background-image{
-	background: url("images/f1_ferrari_bg.jpg") no-repeat center center fixed; 
+	background: url("images/f1_ferrari_bg_flipped.png") center center no-repeat; 
 	-webkit-background-size: cover;
 	-moz-background-size: cover;
 	-o-background-size: cover;
@@ -76,7 +75,7 @@ body {
 }
 
 .header-title{
-	font: normal 500 4rem 'Exo 2', Arial, sans-serif;	
+	font: normal 300 4rem 'Exo 2', Arial, sans-serif;	
 }
 
 .formulaSim-logo{
@@ -138,7 +137,7 @@ body {
 */
 
 .splash-holder{
-	height: 58rem;
+	height: 60rem;
 	width: 100%;
 	position: relative;
 	display: block;
@@ -147,12 +146,15 @@ body {
 .splash-content-holder{
 	display: block;
 	position: absolute;
-	right: 5rem;
-	bottom: 12rem;
+	left: 8rem;
+	bottom: 15rem;
 }
 
 .splash-phrase{
-	font: normal 500 6.5rem 'Exo 2', Arial, sans-serif;
+	font: normal 700 9rem 'Roboto Condensed', Arial, sans-serif;
+	margin-left: -0.45rem;
+	letter-spacing: -0.03rem;
+	text-rendering: optimizeLegibility;
 
 }
 
@@ -168,7 +170,7 @@ body {
 	cursor: pointer;
 	width: 22rem;
 	height: 6rem;
-	margin: 1.5rem 0 0 .4rem;
+	margin: 2.5rem 0 0 0;
 }
 
 .splash-simulation-btn:hover{
@@ -180,10 +182,11 @@ body {
 */
 
 .about-holder{
-	height: 58rem;
+	height: 40rem;
 	width: 100%;
-	background-color: rgba(10, 10, 10, .7);
+	background-color: rgba(20, 20, 20, 1);
 	overflow: auto;
+	position: relative;
 	display: flex;
 	flex-direction: column;
 	justify-content: center;
@@ -191,47 +194,47 @@ body {
 
 .about-content-holder{
 	display: block;
-	width: 104rem;
-	margin: 0 auto 0 auto;
-}
+	width: 70vw;
+	margin: 0 0 0 8rem;
 
+}
+	
 .about-title{
-	font: normal 500 6.5rem 'Exo 2',Helvetica, Arial, sans-serif;
+	font: normal 500 2.4rem 'Exo 2',Helvetica, Arial, sans-serif;
+	color: #C90000;
 }
 
 .about-blerb{
 	color: #FAFAFA;
-	font: normal 300 3.5rem 'Exo 2',Helvetica, Arial, sans-serif;
+	font: normal 300 2rem 'Exo 2', Helvetica, Arial, sans-serif;
 	margin: 1.5rem 0 0 0;
+	line-height: 3.8rem;
+	letter-spacing: 0.03rem;
+	text-rendering: optimizeLegibility;
+
 }
 
 /*
 	Footer styling
 */
-/*
-.page-wrap {
-  min-height: 100%;
-  margin-bottom: -4rem; 
-}
-.page-wrap:after {
-  content: "";
-  display: block;
-  height: 4rem;
-}
-*/
 
 footer{
+	
 	font: normal 300 1.4rem 'Exo 2',Helvetica, Arial, sans-serif;
 	color: #FAFAFA;
-	background-color: rgba(10, 10, 10, .9);	
+	background-color: rgba(20, 20, 20, 1);	
 	box-sizing: border-box;
 	padding: 1rem;
 	height: 4rem;
 	width: 100%;
+	border-top: 1px solid rgba(128, 128, 128, 0.1);
 }
 
 .source-footer{
 	float: right;
+}
+.source-footer a{
+	color: inherit;
 }
 
 
