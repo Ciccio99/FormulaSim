@@ -79,8 +79,8 @@
 	</div>
 	{% if begin_simulation %}
 		<script type="text/javascript">
-			/* Author: Alberto Scicali
-					   cicciobello00@gmail.com
+			/*	Author: Alberto Scicali
+				email: cicciobello00@gmail.com
 			*/
 			// Initial variables
 			// The cnavas and its context
@@ -94,7 +94,6 @@
 			];
 
 			// Grabbing the WIDTH and HEIGHT from the canvas DOM
-			
 			var WIDTH = c.width;
 			var HEIGHT = c.height;
 			// Creating lists of the necessary models drivers, laps, etc
@@ -105,14 +104,16 @@
 	   		var json_pitstops = {{ serialized_pitstops|safe }};
 
 	   		// Variables for the simulation
-	   		
 	   		var TRACK_RADIUS = (WIDTH - 35) / 2;
 			var CAR_WIDTH = 9;
 	   		var TOTAL_CIRCUIT_LAPS = 0;
 	   		var LAP_ANGLE = 0;
 
+	   		// Holder variables that are set for every race
 	   		var simulation_drivers = [];
 	   		var retiredDriverCount = 0;
+
+	   		// Game stat variables
 	   		var simulationCompleted = true;
 	   		var simulationPaused = false;
 
@@ -124,7 +125,12 @@
 	   			return (Math.PI / 180 * deg);
 	   		}
 
-	   	
+	   		/*
+				Driver prototype that holds the necessary function and variables
+				The variables are set from the provided JSON files.
+				@param lastname of the driver, driver codename, driverid/pk, 
+						results construct, list of laptimes, list of pitstops
+	   		*/
 	   		function FormulaDriver(lastname, codeName, driverid, result, laptimes, pitstops){
 				this.lastname = lastname;
 				this.codeName = codeName
@@ -153,6 +159,12 @@
 				this.driverPositionSpan = null;
 				this.pitstop_laps_draw = [];
 
+				/*
+					Updates the speed variable of the driver based off of the avg laptime for the current
+					lap they are currently on. Speed is calculated by taking length of the arc 
+					of the lap angle for the driver's assigned circumfrence. Each driver has a different 
+					circumfrence and radius so that they are position into the circle appropraitely.
+				*/
 				this.updateSpeed = function(){
 					// speed is based off of the laptime of the current lap
 					/*
@@ -165,6 +177,10 @@
 					}
 				};
 
+				/*
+					Move function that uses the the driverSpeed to determine how many units along the driver's
+					circumfrence the driver will move. Also checks if they are already retired or not.
+				*/
 				this.move = function(){
 					//Check if driver is retired from race
 					this.check_retired();
@@ -176,7 +192,7 @@
 							this.updateSpeed();
 						}
 						var speedBoost = document.querySelector('#sim-speed-slider').value;
-						this.posAngle += (this.circumSpeed / this.driverCircum * 360) * speedBoost;
+						this.posAngle += ((this.circumSpeed * speedBoost) / this.driverCircum * 360);
 						this.checkLapped();
 
 					}
@@ -184,6 +200,10 @@
 
 				};
 
+				/*
+					Draw method for the pitstops. Loops the the driver list pitstops_laps_draw[] to check if any 
+					pitstops need to be drawn/
+				*/
 				this.drawPitstops = function(){
 					for(var i = 0; i < this.pitstop_laps_draw.length; i++){
 						lap = this.pitstop_laps_draw[i];
@@ -205,6 +225,10 @@
 					}
 				};
 
+				/*
+					Checks to see if any pitstops occured in the previous lap. If so, they are added to the
+					pitstops_laps_draw[] list so that they will be drawn. The previous lap is checked, that way during the simulation the pitstop is drawn after the driver has passed it. It looks better this way.
+				*/
 				this.checkPitted = function(){
 					for(var i = 0; i < this.pitstops.length; i++){
 						if(pitstops[i].lap == (this.curLap - 1)){
@@ -213,6 +237,10 @@
 					}
 				};
 
+				/*
+					Checks if the driver has finished the current lap, if so the proper variables are incremented.
+					It also checks if the driver is retired within the upcoming lap.
+				*/
 				this.checkLapped = function(){
 					//If the racer reaches the end of the track/canvas, move them to the start of the canvas
 					if(this.posAngle >= (LAP_ANGLE * this.curLap) - 90 && !this.retired){
@@ -223,6 +251,9 @@
 					}	
 				};
 
+				/*
+					Draws the white circle for the driver. 
+				*/
 				this.drawRacerHead = function(){
 					var x = WIDTH/2 + (this.radiusPos) * Math.cos(degToRad((this.posAngle)));
 					var y = HEIGHT/2 + (this.radiusPos) * Math.sin(degToRad((this.posAngle)));
@@ -235,6 +266,9 @@
 					ctx.closePath();
 				};
 
+				/*
+					Draws the final postion number when the driver has retired
+				*/
 				this.drawFinalPostion = function(){
 					var x = WIDTH/2 + (this.radiusPos) * Math.cos(degToRad((this.posAngle)));
 					var y = HEIGHT/2 + (this.radiusPos) * Math.sin(degToRad((this.posAngle)));
@@ -246,6 +280,12 @@
 					ctx.closePath();
 				};
 
+				/*
+					Draws the driver's arc path, indicating where along the race he is.
+					If the driver is not retired, then he continues on as usual.
+					Otherwise, his path is drawn as it was before he retired and his position
+					is drawn on the white-circular driver indicator.
+				*/
 				this.drawRacer = function(){
 					if(!this.retired){
 
@@ -277,8 +317,12 @@
 						this.drawFinalPostion();
 					}
 				};
-						
-				this.check_retired = function(){
+				
+				/*
+					Checks if the driver has finished the race. If so, various driver state variables are changed and DOM manipulation methods are called. The jQuery here is used to draw the statistics and driver position
+					on the driver legend next to the simulation.
+				*/	
+					this.check_retired = function(){
 					if(this.curLap > this.totalLapCount && this.retired == false){
 						this.retired = true;
 						retiredDriverCount += 1;
@@ -289,7 +333,11 @@
 				};
 			};
 
-
+			/*
+				Method that creates a list of the specified driver's laptimes.
+				@param driver id/pk
+				@return list of laptimes
+			*/
 			function get_laptimes(driverid){
 				var laptimeslist = [];
 				for(var i = 0; i < json_laptimes.length; i++){
@@ -298,7 +346,12 @@
 				}
 				return laptimeslist;
 			}
-
+			/*
+				Returns the specified driver's result json object.
+				@param driver id/pk
+				@return driver's result json,
+						otherwise NULL
+			*/
 			function get_driver_results(driverid){
 				for(var i = 0; i < json_results.length; i++){
 					if(json_results[i].fields.driverid == driverid)
@@ -329,7 +382,6 @@
 					if(json_status[i].pk == driver.results.fields.statusid){
 						if(json_status[i].pk == 1){
 							//Taking advantage of access to the driver status to get the total lap count at a circuit
-							//because the track model doesn't hold this information for some reason
 							if(TOTAL_CIRCUIT_LAPS == 0){
 								TOTAL_CIRCUIT_LAPS = driver.totalLapCount;
 								LAP_ANGLE = 360 / TOTAL_CIRCUIT_LAPS;
