@@ -2,11 +2,11 @@
 {% load staticfiles %}
 <html >
 	<head>
-		<title>FormulaSim</title>
 		<link rel="stylesheet" type="text/css" href="{% static 'formulaSim/homeStyle.css' %}">
-		<script src="{% static 'formulaSim/jquery-2.1.4.min.js' %}"></script>
 		{% block extraLinksBlock %}
 		{% endblock extraLinksBlock %}
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
+		<title>FormulaSim</title>
 	</head>
 
 	
@@ -21,7 +21,7 @@
 					<li><a class='menu-list-button btn-transitions cmn-t-underline' href="/">HOME</a></li>
 					<li><a class='menu-list-button btn-transitions cmn-t-underline' href="/#About_Page">ABOUT</a></li>
 					<li><a class='menu-list-button btn-transitions cmn-t-underline' href="/simulations">SIMULATIONS</a></li>
-					<li><a class='menu-list-button btn-transitions cmn-t-underline' href="drivers">DRIVERS</a></li>
+					{# <li><a class='menu-list-button btn-transitions cmn-t-underline' href="drivers">DRIVERS</a></li> #}
 				</ul>
 			</nav>
 		</header>
@@ -37,8 +37,7 @@
 				<div id='About_Page' class='about-holder'>
 					<div class='about-content-holder'>
 						<h1 class='about-title'>About</h1>
-						<p class='about-blerb'>What started as a simple class project has evolved into something greater.
-							FormulaSim was spawned from the idea of making FormulaOne data more approachable and enjoyable. Through visuals and graphics, explore the world of F1. Enjoy your time here and feel free to contact me with any suggestions or features you'd like to see added!</p>
+						<p class='about-blerb'>FormulaSim was spawned from the idea of making FormulaOne data more approachable and enjoyable through visuals and graphics. Enjoy your time here and feel free to contact me with any suggestions or features you'd like to see added!</p>
 					</div>
 				</div>
 			</div>
@@ -46,7 +45,7 @@
 		
 		<footer>
 			<div class="inner">
-				<span class='authore-footer footer-content'>Created by Alberto Scicali</span>
+				<span class='author-footer footer-content'><a href="mailto:alberto.scicali@gmail.com?Subject=Hello!" target="_top">Created by Alberto Scicali</a></span>
 				<span class='source-footer footer-content'><a href="http://ergast.com/mrd/" target='_blank'>Data sourced from Ergast Developer API</a></span>
 			</div>
     	</footer>

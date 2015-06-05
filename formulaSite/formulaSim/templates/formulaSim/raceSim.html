@@ -8,7 +8,7 @@
 
 {% endblock extraLinksBlock %}
 
-{% block mainContentBlock %}	
+{% block mainContentBlock %}
 	<div class='simulation-background-holder background-image'>
 
 		<div class='semi-transparent-div'>
@@ -78,21 +78,45 @@
 		</div>	
 	</div>
 	{% if begin_simulation %}
+		{#<script type="text/javascript" src="{% static 'jScripts/simulationApp.js'%}"></script>#}
 		<script type="text/javascript">
 			/*	Author: Alberto Scicali
 				email: cicciobello00@gmail.com
 			*/
-			// Initial variables
-			// The cnavas and its context
+
+			// The canvas and its context
 			var c = document.getElementById("c");
 			var ctx = c.getContext("2d");
 
+			// This Scales the canvas so it does not lose quality on 
+			// high resolution monitors
+			devicePixelRatio = window.devicePixelRatio || 1;
+			console.log("pixel ration " + devicePixelRatio);
+			if(devicePixelRatio > 1){
+				console.log("HERE");
+	    		backingStoreRatio = ctx.webkitBackingStorePixelRatio ||
+	                        		ctx.mozBackingStorePixelRatio ||
+	                        		ctx.msBackingStorePixelRatio ||
+	                        		ctx.oBackingStorePixelRatio ||
+	                        		ctx.backingStorePixelRatio || 1;
+				var ratio = devicePixelRatio / backingStoreRatio;
+
+				// resize canvas' logical size (ensure CSS maintains original size)//
+				var w = ctx.canvas.width;
+				var h = ctx.canvas.height;
+				c.setAttribute('width', w*ratio);
+				c.setAttribute('height', h*ratio);
+				c.style.width = w + 'px';
+	        	c.style.height = h + 'px';
+        	}
+
 			// List of color variables for racers to choose from
-			var driverColorSpectrum = ['#F8C677', '#5F7BB7', '#F34A35', '#B81C46', '#2DD692', '#F9E671', '#FFAC43', 
+			var driverColorSpectrum = ['#F8C677', '#5F7BB7', '#F34A35', '#B81C46', '#2DD692', '#2D6F70', '#FFAC43', 
 			'#F36B76', '#FF005C', '#2DA570', '#FEBE18', '#FF6B00', '#D93445', '#FC000F', '#2DD070', '#7F89AE', '#F3427F', 
-			'#FF8943', '#FF6600', '#E91229', '#FFA300', '#00A9B5', '#7512A7', '#2D6F70', '#F35260'
+			'#FF8943', '#FF6600', '#E91229', '#FFA300', '#00A9B5', '#F9E671' , '#7512A7', '#F35260'
 			];
 
+			// Initial variables
 			// Grabbing the WIDTH and HEIGHT from the canvas DOM
 			var WIDTH = c.width;
 			var HEIGHT = c.height;
@@ -104,14 +128,16 @@
 	   		var json_pitstops = {{ serialized_pitstops|safe }};
 
 	   		// Variables for the simulation
-	   		var TRACK_RADIUS = (WIDTH - 35) / 2;
-			var CAR_WIDTH = 9;
+	   		var TRACK_RADIUS = (WIDTH - 45) / 2;
+			var CAR_WIDTH = WIDTH / 70;
 	   		var TOTAL_CIRCUIT_LAPS = 0;
 	   		var LAP_ANGLE = 0;
 
 	   		// Holder variables that are set for every race
 	   		var simulation_drivers = [];
+	   		var driverRadiusPos = [];
 	   		var retiredDriverCount = 0;
+
 
 	   		// Game stat variables
 	   		var simulationCompleted = true;
@@ -219,8 +245,8 @@
 					    ctx.stroke();
 						ctx.fillStyle = '#FAFAFA';
 						ctx.textAlign = 'center';
-						ctx.font = ' 8px Helvetica';
-						ctx.fillText('P', x, y + 3);
+						ctx.font = 'bold ' + (CAR_WIDTH - 1) + 'px Helvetica';
+						ctx.fillText('P', x, y + CAR_WIDTH / 3);
 						ctx.closePath();
 					}
 				};
@@ -275,8 +301,8 @@
 					ctx.beginPath();
 					ctx.fillStyle = 'black';
 					ctx.textAlign = 'center';
-					ctx.font = ' 8px Helvetica';
-					ctx.fillText(this.results.fields.positiontext, x, y + 3);
+					ctx.font = 'bold ' + (CAR_WIDTH - 4) + 'px Helvetica';
+					ctx.fillText(this.results.fields.positiontext, x, y + CAR_WIDTH / 4);
 					ctx.closePath();
 				};
 
@@ -407,6 +433,7 @@
 					var driverFields = json_drivers[i].fields;
 					var newDriver = new FormulaDriver(driverFields.surname, driverFields.code, json_drivers[i].pk, get_driver_results(json_drivers[i].pk), get_laptimes(json_drivers[i].pk), get_pitstops(json_drivers[i].pk));
 					newDriver.radiusPos = (TRACK_RADIUS * 0.99) - ((CAR_WIDTH + 4)*(i + 1));
+					driverRadiusPos.push(newDriver.radiusPos);
 					newDriver.driverCircum = (2 * Math.PI * newDriver.radiusPos);
 					newDriver.curStatus = get_final_status( newDriver );
 					newDriver.lapLength = set_lap_length();
@@ -469,10 +496,11 @@
 					ctx.lineTo(x, y);
 					ctx.stroke();  
 					
-					ctx.fillStyle = '#FAFAFA';
+					ctx.fillStyle = '#DADADA';
 					ctx.textAlign = 'center';
-					ctx.font = ' 12px Helvetica';
-					ctx.fillText(i + 1, x, y + 5);
+					ctx.font = '' + (CAR_WIDTH) + 'px Helvetica';
+
+					ctx.fillText(i + 1, x, y + CAR_WIDTH / 4);
 					ctx.closePath();
 				}
 	   		}
@@ -496,6 +524,17 @@
 	   			}
 	   		}
 
+	   		function drawDriverLanes(){
+	   			for(var i = 0; i < driverRadiusPos.length; i++){
+	   				ctx.strokeStyle = "rgba(90, 90, 90, " + (1 - (0.03 * i)) + ")";
+	   				ctx.beginPath();
+		   			ctx.lineWidth = CAR_WIDTH ;
+					ctx.arc(WIDTH / 2, HEIGHT / 2, driverRadiusPos[i], 0, 2 * Math.PI, false);
+					ctx.stroke();
+					ctx.closePath();
+	   			}
+	   		}
+
 
 	   		// Var to hold animation ID so that it can be cancelled when simulation
 	   		// is complete or paused
@@ -511,8 +550,8 @@
 
 				// Draws the track lap lines
 				drawLapLines();
+				drawDriverLanes();
 				drawCheckeredLine();
-				
 
 				// Loop through drivers to draw them
 				for(var i = 0; i < simulation_drivers.length; i++){
@@ -598,9 +637,10 @@
 				startSimulation();
 			}
 
-			window.onload = startSimulation();
+			$( window ).ready(startSimulation());
 
 		</script>
+
 	{% endif %}
 
 

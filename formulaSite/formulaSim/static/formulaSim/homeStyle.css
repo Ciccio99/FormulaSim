@@ -22,14 +22,9 @@ h4{
 header{
 	width: 100%;
 	background-color: rgba(20, 20, 20, 1);
-	height: 9rem;
+	height: 6rem;
 	display: flex;
 	justify-content: space-between;
-}
-
-.header-menu-nav{
-	box-sizing: border-box;
-	padding: 2.9rem 0 0 0;
 }
 
 body {
@@ -69,13 +64,13 @@ body {
 
 .site-title-container{
 	box-sizing: border-box;
-	padding: 2.6rem 2rem 1rem 2rem;
+	padding: 1rem 2rem 1rem 2rem;
 	text-align: center;
 	display: inline-block;
 }
 
 .header-title{
-	font: normal 300 4rem 'Exo 2', Arial, sans-serif;	
+	font: normal 300 3rem 'Exo 2', Arial, sans-serif;	
 }
 
 .formulaSim-logo{
@@ -89,7 +84,6 @@ body {
 .nav-menu-list{
 	font: normal 500 1.6rem 'Exo 2', Arial, sans-serif;
 	color: #FAFAFA;
-	width: 50rem;
 	box-sizing: border-box;
 	padding: 1rem;
 	display: flex;
@@ -228,6 +222,10 @@ footer{
 	height: 4rem;
 	width: 100%;
 	border-top: 1px solid rgba(128, 128, 128, 0.1);
+}
+
+.author-footer a{
+	color: inherit;
 }
 
 .source-footer{
