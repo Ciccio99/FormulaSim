@@ -35,29 +35,21 @@ body {
 
 #Central_Content_Container{
 	width: 100%;
-	/*
-	background: url("images/f1_ferrari_bg.jpg") no-repeat center center fixed; 
-	-webkit-background-size: cover;
-	-moz-background-size: cover;
-	-o-background-size: cover;
-	background-size: cover;
-	*/
 }
 
 .background-image{
 	background: url("images/f1_ferrari_bg_flipped.png") center center no-repeat; 
-	-webkit-background-size: cover;
 	-moz-background-size: cover;
 	-o-background-size: cover;
 	background-size: cover;
 }
 
 .btn-transitions{
-	-webkit-transition: all 0.2s;
-  	-moz-transition: all 0.2s;
-  	-ms-transition: all 0.2s;
-  	-o-transition: all 0.2s;
-  	transition: all 0.2s;
+	-webkit-transition: all 0.1s;
+  	-moz-transition: all 0.1s;
+  	-ms-transition: all 0.1s;
+  	-o-transition: all 0.1s;
+  	transition: all 0.1s;
 }
 
 

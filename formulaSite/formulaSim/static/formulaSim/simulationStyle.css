@@ -34,7 +34,6 @@
 
 .slider-holder{
 	color: #fafafa;
-	width: 46rem;
 	font: normal 500 2rem 'Exo 2', Helvetica, Arial, sans-serif;
 	box-sizing: border-box;
 	margin: 0 auto 0 auto;
@@ -42,37 +41,28 @@
 	justify-content: space-around;
 	flex-flow: row wrap;
 	box-sizing: border-box;
-	padding: 5rem 0 6rem 0;
-}
-
-.slider-inner-div{
-	display: inline-block;
-}
-
-.slider-holder label{
-	display: block;
-	text-align: center;
-}
-
-.slider-labels{
-	font: normal 500 1.4rem 'Exo 2', Helvetica, Arial, sans-serif;
+	padding: 4.5rem 0 4rem 0;
 }
 
 .simulation-btns{
-	font: normal 500 1.4rem 'Exo 2', Helvetica, Arial, sans-serif;
+	font: normal 500 1.6rem 'Exo 2', Helvetica, Arial, sans-serif;
 	background-color: #C90000;
 	color: #FAFAFA;
 	outline: none 0;
 	border: none;
 	box-sizing: border-box;
 	cursor: pointer;
-	width: 8rem;
-	height: 3rem;
+	width: 24rem;
+	height: 4rem;
 	display: inline-block;
 }
 
 .simulation-btns:hover{
 	background-color: #353535;
+}
+
+.simulation-btns:active{
+	background-color: #460000;
 }
 
 
@@ -123,10 +113,11 @@
 	background-position: 95% 50%;
 }
 .race-form-input:focus{
-	/* Firefox select black border issue fix */
+	/* Firefox select black border issue fix 
 	color: transparent;
     text-shadow: 0 0 0 #000;
 	box-shadow: 0 0 8px rgba(255, 255, 255, 1);
+	*/
 }
 
 .form-error-message{

@@ -59,15 +59,8 @@
 				{% if begin_simulation %}
 				<div class='canvas-container'>	
 						<div class='slider-holder'>
-							<label class='slider-title' for=fader>Simulation Speed</label>
 							<button id='Start_Pause_Btn' class='simulation-btns btn-transitions' type="button" name="button" value="Start" onclick='startSimulation()'>Start</button>
-							<div class='slider-inner-div'>
-
-								<span class='slider-labels'>Slow</span>
-								<input type=range min=1 max=10000 value=1000 id='sim-speed-slider'>
-								<span class='slider-labels'>Fast</span>
-
-							</div>
+							
 							<button class='simulation-btns btn-transitions' type="button" name="button" value="Restart" onclick='restartSimulation()'>Restart</button>
 						</div>	
 					<canvas id="c" width="700" height="700">
@@ -91,9 +84,8 @@
 			// This Scales the canvas so it does not lose quality on 
 			// high resolution monitors
 			devicePixelRatio = window.devicePixelRatio || 1;
-			console.log("pixel ration " + devicePixelRatio);
+			
 			if(devicePixelRatio > 1){
-				console.log("HERE");
 	    		backingStoreRatio = ctx.webkitBackingStorePixelRatio ||
 	                        		ctx.mozBackingStorePixelRatio ||
 	                        		ctx.msBackingStorePixelRatio ||
@@ -199,7 +191,7 @@
 					}
 					*/
 					if(!this.retired && this.laptimes[this.curLap - 1] != null){
-						this.circumSpeed = ((this.driverCircum / TOTAL_CIRCUIT_LAPS) / this.laptimes[this.curLap - 1].milliseconds);
+						this.circumSpeed = ((this.driverCircum / TOTAL_CIRCUIT_LAPS) / this.laptimes[this.curLap - 1].milliseconds) * 10000;
 					}
 				};
 
@@ -217,8 +209,7 @@
 						if(this.curLap == 1){
 							this.updateSpeed();
 						}
-						var speedBoost = document.querySelector('#sim-speed-slider').value;
-						this.posAngle += ((this.circumSpeed * speedBoost) / this.driverCircum * 360);
+						this.posAngle += ((this.circumSpeed) / this.driverCircum * 360);
 						this.checkLapped();
 
 					}
@@ -586,7 +577,7 @@
 					if(simulation_drivers.length == 0)
 						create_drivers();
 					animationID = window.requestAnimationFrame(draw);
-					raceInterval = setInterval(function(){simulate();}, 1);
+					raceInterval = setInterval(function(){simulate();}, 10);
 					document.getElementById('Start_Pause_Btn').innerHTML = 'Pause';
 				}
 				else if(simulationPaused){
