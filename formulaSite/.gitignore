@@ -1,6 +1,7 @@
 # Django stuff:
 *.log
-settings.py
+*/settings.py
+*/settings.pyc
 
 # OS Generated files #
 .DS_Store
