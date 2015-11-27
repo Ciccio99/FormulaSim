@@ -577,7 +577,9 @@
 					if(simulation_drivers.length == 0)
 						create_drivers();
 					animationID = window.requestAnimationFrame(draw);
-					raceInterval = setInterval(function(){simulate();}, 10);
+					raceInterval = setInterval(function() {
+						simulate();
+					}, 10);
 					document.getElementById('Start_Pause_Btn').innerHTML = 'Pause';
 				}
 				else if(simulationPaused){
